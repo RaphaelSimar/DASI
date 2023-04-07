@@ -1,11 +1,7 @@
 dao\JpaUtil.class
-metier\Eleve_.class
-dao\EleveDao.class
 metier\Employe_.class
-vue\Main.class
 metier\Employe.class
 util\Message.class
 dao\JpaUtil$1.class
-metier\Eleve.class
 metier\Service.class
 dao\EmployeDao.class

@@ -5,12 +5,14 @@
  */
 package metier;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -19,14 +21,14 @@ import javax.persistence.TemporalType;
  * @author rsimar
  */
 @Entity
-public class Eleve {
-
-    @Temporal(TemporalType.DATE)
-    private Date dateNaissance;
-    @Id
+public class Eleve implements Serializable {
+  @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String nomEtablissement;
+    @Temporal(TemporalType.DATE)
+    private Date dateNaissance;
+    @ManyToOne
+    private Etablissement etablissement;
     private String niveau;
     private String nom;
     private String prenom;
@@ -43,8 +45,8 @@ public class Eleve {
         return id;
     }
 
-    public String getNomEtablissement() {
-        return nomEtablissement;
+    public Etablissement getEtablissement() {
+        return etablissement;
     }
 
     public String getNiveau() {
@@ -79,8 +81,8 @@ public class Eleve {
         this.id = id;
     }
 
-    public void setNomEtablissement(String nomEtablissement) {
-        this.nomEtablissement = nomEtablissement;
+    public void setEtablissement(Etablissement e) {
+        this.etablissement = e;
     }
 
     public void setNiveau(String niveau) {
@@ -109,21 +111,25 @@ public class Eleve {
 
     @Override
     public String toString() {
-        return "Eleve{" + "dateNaissance=" + dateNaissance + ", id=" + id + ", nomEtablissement=" + nomEtablissement + ", niveau=" + niveau + ", nom=" + nom + ", prenom=" + prenom + ", mail=" + mail + ", mdp=" + mdp + ", adressePostale=" + adressePostale + '}';
+        return "Eleve{" + "dateNaissance=" + dateNaissance + ", id=" + id + ", Etablissement=" + etablissement + ", niveau=" + niveau + ", nom=" + nom + ", prenom=" + prenom + ", mail=" + mail + ", mdp=" + mdp + ", adressePostale=" + adressePostale + '}';
     }
 
     public Eleve() {
     }
 
-    public Eleve(Date dateNaissance, String nomEtablissement, String niveau, String nom, String prenom, String mail, String mdp, String adressePostale) {
+    public Eleve(Date dateNaissance, String niveau, String nom, String prenom, String mail, String mdp, String adressePostale) {
         this.dateNaissance = dateNaissance;
-        this.nomEtablissement = nomEtablissement;
         this.niveau = niveau;
         this.nom = nom;
         this.prenom = prenom;
         this.mail = mail;
         this.mdp = mdp;
         this.adressePostale = adressePostale;
+        
+        //Vérifie existence etab dans la bd
+        //si existe, alors on récup l'objet
+        //sinon on construit un étab
+        //this.etablissement = e;
     }
 
 }

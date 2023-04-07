@@ -5,9 +5,12 @@
  */
 package metier;
 
+import dao.EducNetApi;
 import dao.EleveDao;
 import dao.JpaUtil;
 import dao.EmployeDao;
+import dao.EtablissementDao;
+import java.io.IOException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -130,27 +133,53 @@ public class Service {
 
     }
 
-    public boolean inscriptionEleve(Eleve eleve) {
+    public boolean inscriptionEleve(Eleve eleve, String uai) {
         EleveDao edao = new EleveDao();
-        Eleve e = eleve;
-        boolean result;
+        EtablissementDao etabdao = new EtablissementDao();
+        Etablissement etab;
+        boolean result = false;
+        boolean etab_found = true;
 
         try {
             JpaUtil.creerContextePersistance();
-            JpaUtil.ouvrirTransaction();
-            edao.create(e);
-            JpaUtil.validerTransaction();
-            System.out.println("Trace : succès inscription eleve" + e);
-            envoyerMail("toto@mail.com", e.getMail(), "Confirmation inscription", "Votre inscription à Instruct'IF est validée.");
-            result = true;
+            etab = etabdao.findEtablissementById(uai);
+            //Vérifie l'existence de l'étab dans la BD
+            if (etab == null) {
+                etab_found = false;
+                etab = creerEtablissementApi(uai);
+            }
+            //Vérifie si l'étab a bien été créé avec l'API
+            if (etab == null) {
+                System.out.println("Trace : échec inscription eleve - établissement inconnu" + uai);
+            } else {
+                eleve.setEtablissement(etab);
+
+                JpaUtil.ouvrirTransaction();
+                edao.create(eleve);
+                if (!etab_found) {
+                    etabdao.create(etab);
+                }
+                JpaUtil.validerTransaction();
+
+                System.out.println("Trace : succès inscription eleve" + eleve);
+
+                result = true;
+            }
+
         } catch (Exception ex) {
             ex.printStackTrace();
             JpaUtil.annulerTransaction();
-            envoyerMail("toto@mail.com", e.getMail(), "Echec inscription", "Votre inscription à Instruct'IF a malheureusement rencontré une erreur. Merci de réessayer.");
             result = false;
         } finally {
             JpaUtil.fermerContextePersistance();
         }
+
+        if (result) {
+            envoyerMail("toto@mail.com", eleve.getMail(), "Confirmation inscription", "Votre inscription à Instruct'IF est validée.");
+        } else {
+            envoyerMail("toto@mail.com", eleve.getMail(), "Echec inscription", "Votre inscription à Instruct'IF a malheureusement rencontré une erreur. Merci de réessayer.");
+        }
+        
         return result;
     }
 
@@ -163,7 +192,7 @@ public class Service {
             JpaUtil.creerContextePersistance();
             e = edao.findEleveById(id);
             System.out.println("Trace : succès find " + id);
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
             JpaUtil.annulerTransaction();
@@ -210,6 +239,82 @@ public class Service {
             JpaUtil.fermerContextePersistance();
         }
         return e;
+    }
+
+    /* -------------------ETABLISSEMENTS ------------------- */
+    public Etablissement trouverEtablissementParUai(String uai) {
+        EtablissementDao edao = new EtablissementDao();
+        Etablissement e;
+
+        try {
+
+            JpaUtil.creerContextePersistance();
+            e = edao.findEtablissementById(uai);
+            System.out.println("Trace : succès find " + uai);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+            e = null;
+
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return e;
+    }
+
+    private Etablissement creerEtablissementApi(String uai) {
+        Etablissement e;
+        EducNetApi api = new EducNetApi();
+
+        try {
+
+            List<String> result = api.getInformationCollege(uai);
+            // List<String> result = api.getInformationLycee("0690132U");
+            if (result != null) {
+                String nom = result.get(1);
+                String secteur = result.get(2);
+                String insee = result.get(3);
+                String commune = result.get(4);
+                String codeDepartement = result.get(5);
+                String departement = result.get(6);
+                String academie = result.get(7);
+                String ips = result.get(8);
+
+                e = new Etablissement(uai, nom, secteur, commune, ips, academie, departement, codeDepartement, insee);
+
+            } else {
+                e = null;
+            }
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            e = null;
+        }
+
+        return e;
+
+    }
+
+    public boolean ajouterEtablissement(Etablissement e) {
+        EtablissementDao edao = new EtablissementDao();
+        boolean result;
+
+        try {
+            JpaUtil.creerContextePersistance();
+            JpaUtil.ouvrirTransaction();
+            edao.create(e);
+            JpaUtil.validerTransaction();
+            System.out.println("Trace : succès ajout établisement" + e);
+            result = true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            result = false;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return result;
     }
 
 }
