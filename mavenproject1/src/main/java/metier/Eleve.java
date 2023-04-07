@@ -29,7 +29,7 @@ public class Eleve implements Serializable {
     private Date dateNaissance;
     @ManyToOne
     private Etablissement etablissement;
-    private String niveau;
+    private Integer niveau;
     private String nom;
     private String prenom;
     @Column(unique = true)
@@ -49,7 +49,7 @@ public class Eleve implements Serializable {
         return etablissement;
     }
 
-    public String getNiveau() {
+    public Integer getNiveau() {
         return niveau;
     }
 
@@ -85,7 +85,7 @@ public class Eleve implements Serializable {
         this.etablissement = e;
     }
 
-    public void setNiveau(String niveau) {
+    public void setNiveau(Integer niveau) {
         this.niveau = niveau;
     }
 
@@ -117,7 +117,7 @@ public class Eleve implements Serializable {
     public Eleve() {
     }
 
-    public Eleve(Date dateNaissance, String niveau, String nom, String prenom, String mail, String mdp, String adressePostale) {
+    public Eleve(Date dateNaissance, Integer niveau, String nom, String prenom, String mail, String mdp, String adressePostale) {
         this.dateNaissance = dateNaissance;
         this.niveau = niveau;
         this.nom = nom;

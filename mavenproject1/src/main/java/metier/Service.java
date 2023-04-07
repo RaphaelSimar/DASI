@@ -146,7 +146,7 @@ public class Service {
             //Vérifie l'existence de l'étab dans la BD
             if (etab == null) {
                 etab_found = false;
-                etab = creerEtablissementApi(uai);
+                etab = creerEtablissementApi(uai, eleve.getNiveau());
             }
             //Vérifie si l'étab a bien été créé avec l'API
             if (etab == null) {
@@ -179,7 +179,7 @@ public class Service {
         } else {
             envoyerMail("toto@mail.com", eleve.getMail(), "Echec inscription", "Votre inscription à Instruct'IF a malheureusement rencontré une erreur. Merci de réessayer.");
         }
-        
+
         return result;
     }
 
@@ -263,13 +263,17 @@ public class Service {
         return e;
     }
 
-    private Etablissement creerEtablissementApi(String uai) {
+    private Etablissement creerEtablissementApi(String uai, Integer niveau) {
         Etablissement e;
         EducNetApi api = new EducNetApi();
 
         try {
-
-            List<String> result = api.getInformationCollege(uai);
+            List<String> result;
+            if (niveau < 3) {
+                result = api.getInformationLycee(uai);
+            } else {
+                result = api.getInformationCollege(uai);
+            }
             // List<String> result = api.getInformationLycee("0690132U");
             if (result != null) {
                 String nom = result.get(1);

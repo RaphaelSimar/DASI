@@ -83,12 +83,12 @@ public class Main {
 
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Eleve e1 = new Eleve(dateFormat.parse("11/06/2002"), "6", "SIMAR", "Raphael", "simar.raphael@laposte.net", "mdp1", "3ter chemin des boubibou");
-            Eleve e2 = new Eleve(dateFormat.parse("06/08/2001"), "5", "BORG", "Lina", "borg.lina@laposte.net", "mdp2", "Sous l'océan");
-            Eleve e3 = new Eleve(dateFormat.parse("01/01/2000"), "4", "LASALLE", "Jean", "lasalle.jean@laposte.net", "mdp3", "Lourdios");
-            s.inscriptionEleve(e1, "0780656P");
-            s.inscriptionEleve(e2, "0641658E");
-            s.inscriptionEleve(e3, "0780656P");
+            Eleve e1 = new Eleve(dateFormat.parse("11/06/2002"), 6, "SIMAR", "Raphael", "simar.raphael@laposte.net", "mdp1", "3ter chemin des boubibou");
+            Eleve e2 = new Eleve(dateFormat.parse("06/08/2001"), 5, "BORG", "Lina", "borg.lina@laposte.net", "mdp2", "Sous l'océan");
+            Eleve e3 = new Eleve(dateFormat.parse("01/01/2000"), 1, "LASALLE", "Jean", "lasalle.jean@laposte.net", "mdp3", "Lourdios");
+            s.inscriptionEleve(e1, "0780656P"); 
+            s.inscriptionEleve(e2, "0780656P"); //0641658E college Lina
+            s.inscriptionEleve(e3, "0640126P");
             
             //s.inscriptionEleve(new Eleve(dateFormat.parse("06/08/2000"), "etablissement", "laclasse", "lenom", "leprenom", "pas.moi@insa-lyon.fr", "mdpamoi", "ladresse"));
             //s.inscriptionEleve(new Eleve(dateFormat.parse("06/08/2000"), "etablissement", "laclasse", "lenom", "leprenom", "pas.moi.non.plus@insa-lyon.fr", "mdpamoi", "ladresse"));

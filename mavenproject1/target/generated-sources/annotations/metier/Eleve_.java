@@ -6,7 +6,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 import metier.Etablissement;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2023-04-07T17:06:13")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2023-04-07T17:17:52")
 @StaticMetamodel(Eleve.class)
 public class Eleve_ { 
 
@@ -16,7 +16,7 @@ public class Eleve_ {
     public static volatile SingularAttribute<Eleve, Etablissement> etablissement;
     public static volatile SingularAttribute<Eleve, Long> id;
     public static volatile SingularAttribute<Eleve, String> adressePostale;
-    public static volatile SingularAttribute<Eleve, String> niveau;
+    public static volatile SingularAttribute<Eleve, Integer> niveau;
     public static volatile SingularAttribute<Eleve, String> nom;
     public static volatile SingularAttribute<Eleve, String> prenom;
 
