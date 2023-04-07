@@ -5,6 +5,10 @@
     <class>metier.Employe</class>
     <class>metier.Eleve</class>
     <class>metier.Etablissement</class>
+    <class>metier.Intervenant</class>
+    <class>metier.Enseignant</class>
+    <class>metier.Autre</class>
+    <class>metier.Etudiant</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/dasi"/>
       <property name="javax.persistence.jdbc.user" value="dasi"/>

@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import metier.Eleve;
 import metier.Employe;
+import metier.Intervenant;
 import metier.Service;
 
 /**
@@ -25,6 +26,9 @@ public class Main {
         JpaUtil.creerFabriquePersistance();
         Service s = new Service();
         s.initialiserEmployes();
+        
+        // TESTER CREATION INTERVENANTS : creer contexte persistance, valider transaction etc.
+        Intervenant i = new Intervenant( "login", "nom", "prenom", 5, 4, "telephone",  "mail",  "mdp",  true,  8);
         
 
         // ==================Tests================== //
