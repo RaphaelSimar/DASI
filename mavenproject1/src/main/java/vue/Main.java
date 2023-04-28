@@ -25,10 +25,10 @@ public class Main {
     public static void main(String[] args) {
         JpaUtil.creerFabriquePersistance();
         Service s = new Service();
-        s.initialiserEmployes();
+        //s.initialiserEmployes();
+        s.initialiserIntervenants();
         
         // TESTER CREATION INTERVENANTS : creer contexte persistance, valider transaction etc.
-        Intervenant i = new Intervenant( "login", "nom", "prenom", 5, 4, "telephone",  "mail",  "mdp",  true,  8);
         
 
         // ==================Tests================== //
@@ -49,7 +49,7 @@ public class Main {
 
         testerAuthentifierEleveId(Long.valueOf(8), "mdpamoi", s);
         // ========================================= // */
-        testerInscriptionEleve(s);
+        //testerInscriptionEleve(s);
 
     }
 
@@ -94,9 +94,7 @@ public class Main {
             s.inscriptionEleve(e2, "0780656P"); //0641658E college Lina
             s.inscriptionEleve(e3, "0640126P");
             
-            //s.inscriptionEleve(new Eleve(dateFormat.parse("06/08/2000"), "etablissement", "laclasse", "lenom", "leprenom", "pas.moi@insa-lyon.fr", "mdpamoi", "ladresse"));
-            //s.inscriptionEleve(new Eleve(dateFormat.parse("06/08/2000"), "etablissement", "laclasse", "lenom", "leprenom", "pas.moi.non.plus@insa-lyon.fr", "mdpamoi", "ladresse"));
-        } catch (ParseException ex) {
+         } catch (ParseException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
