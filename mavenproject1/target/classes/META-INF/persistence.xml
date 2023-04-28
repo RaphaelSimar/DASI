@@ -10,6 +10,7 @@
     <class>metier.Autre</class>
     <class>metier.Etudiant</class>
     <class>metier.Matiere</class>
+    <class>metier.Soutien</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/dasi"/>
       <property name="javax.persistence.jdbc.user" value="dasi"/>

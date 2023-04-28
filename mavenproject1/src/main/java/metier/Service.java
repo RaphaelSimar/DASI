@@ -12,6 +12,7 @@ import dao.EmployeDao;
 import dao.EtablissementDao;
 import dao.IntervenantDao;
 import dao.MatiereDao;
+import dao.SoutienDao;
 import java.io.IOException;
 import java.util.List;
 
@@ -370,9 +371,9 @@ public class Service {
         // login, nom, prénom, niveau min, niveau max, téléphone, mail, mdp, disponible, nbInterventions
         Intervenant i1 = new Intervenant("aalphabet", "alphabet", "adrien", 5, 4, "0100000000", "adrien.alphabet@insa-lyon.fr", "mdp1", true, 8);
         Intervenant i2 = new Intervenant("bbouteille", "bouteille", "baptiste", 6, 3, "0200000000", "bapiste.bouteille@insa.fr", "mdp2", true, 18);
-        Intervenant i3 = new Intervenant("cchapeau", "chapeau", "coralie", 2, 0, "0300000000", "coralie.chapeau@insa.fr", "mdp3", true, 4);
+        Intervenant i3 = new Intervenant("cchapeau", "chapeau", "coralie", 2, 0, "0300000000", "coralie.chapeau@insa.fr", "mdp3", false, 4);
         Intervenant i4 = new Intervenant("ddivision", "division", "donald", 4, 0, "0400000000", "donald.division@insa.fr", "mdp4", true, 53);
-        Intervenant i5 = new Intervenant("eecharpe", "ehcarpe", "emilie", 6, 5, "0500000000", "emlilie.ehcarpe@insa.fr", "mdp5", true, 1);
+        Intervenant i5 = new Intervenant("eecharpe", "ehcarpe", "emilie", 6, 5, "0500000000", "emlilie.ehcarpe@insa.fr", "mdp5", false, 1);
         Intervenant i6 = new Intervenant("fflute", "flute", "flore", 6, 5, "0600000000", "flore.flute@insa.fr", "mdp6", true, 6);
 
         IntervenantDao idao = new IntervenantDao();
@@ -439,7 +440,29 @@ public class Service {
         return i;
     }
 
+    public Intervenant trouverIntervenantSoutien(Eleve e) {
+        IntervenantDao idao = new IntervenantDao();
+        Intervenant i = new Intervenant();
+
+        try {
+
+            JpaUtil.creerContextePersistance();
+            i = idao.findIntervenantSoutien(e);
+            System.out.println("Trace : succès find intervenant " + i.getPrenom() + " pour soutien");
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            i = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return i;
+    }
+    
+    
     /* -------------------MATIERES------------------- */
+
     public boolean initialiserMatieres() {
         Matiere fra = new Matiere("Français");
         Matiere mat = new Matiere("Mathématiques");
@@ -506,5 +529,46 @@ public class Service {
         }
         return mat;
 
+    }
+
+    public Matiere trouverMatiereParId(Long id) {
+        MatiereDao mdao = new MatiereDao();
+        Matiere m = new Matiere();
+
+        try {
+
+            JpaUtil.creerContextePersistance();
+            m = mdao.findMatiereById(id);
+            System.out.println("Trace : succès find matière " + id);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            m = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return m;
+    }
+
+    public boolean ajouterSoutien(Soutien s) {
+        SoutienDao sdao = new SoutienDao();
+        boolean result;
+
+        try {
+            JpaUtil.creerContextePersistance();
+            JpaUtil.ouvrirTransaction();
+            sdao.create(s);
+            JpaUtil.validerTransaction();
+            System.out.println("Trace : succès ajout soutien" + s);
+            result = true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            result = false;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return result;
     }
 }

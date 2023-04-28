@@ -22,18 +22,22 @@ import javax.persistence.TemporalType;
  */
 @Entity
 public class Eleve implements Serializable {
-  @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Temporal(TemporalType.DATE)
     private Date dateNaissance;
+    
     @ManyToOne
     private Etablissement etablissement;
+    
     private Integer niveau;
     private String nom;
     private String prenom;
+    
     @Column(unique = true)
     private String mail;
+    
     private String mdp;
     private String adressePostale;
 

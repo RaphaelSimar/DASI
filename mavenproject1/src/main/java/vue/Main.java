@@ -8,6 +8,7 @@ package vue;
 import dao.JpaUtil;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +17,7 @@ import metier.Employe;
 import metier.Intervenant;
 import metier.Matiere;
 import metier.Service;
+import metier.Soutien;
 
 /**
  *
@@ -32,6 +34,10 @@ public class Main {
         
         testerListerToutesMatieres(s);
         
+        testerInscriptionEleve(s);
+        
+        testerCreationSoutien(s);
+        
         //testerAuthentifierIntervenantMail("adrien.alphabet@insa-lyon.fr", "mdp1", s);
         
         // TESTER CREATION INTERVENANTS : creer contexte persistance, valider transaction etc.
@@ -47,7 +53,7 @@ public class Main {
         testerAuthentifierEmploye("sdekew", "mdp2", s);
 
         // Élèves
-        testerInscriptionEleve();
+        
 
         testerTrouverEleveParId(Long.valueOf(8), s);
 
@@ -168,6 +174,21 @@ public class Main {
             System.out.println(m);
         }
         System.out.println("===========================================\n");
+    }
+    
+    static void testerCreationSoutien(Service s) {
+        Soutien soutien = new Soutien(s.trouverEleveParId(Long.valueOf(20)), s.trouverMatiereParId(Long.valueOf(8)), "Aled");
+        Intervenant i = s.trouverIntervenantSoutien(soutien.getEleve());
+        System.out.println("Intervenant trouvé : " + i);
+        soutien.setIntervenant(i);
+
+        soutien.setDebutSoutien(new Date());
+        // La visio est en cours
+        // L'élève met fin à la visio
+        soutien.setFinSoutien(new Date());
+        // L'élève saisit la note à donner au soutien
+        soutien.setNote(5);
+        s.ajouterSoutien(soutien);
     }
 
     public static final String FG_GREEN = "\u001b[32m";
