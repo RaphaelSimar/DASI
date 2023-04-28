@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import metier.Eleve;
 import metier.Employe;
 import metier.Intervenant;
+import metier.Matiere;
 import metier.Service;
 
 /**
@@ -27,6 +28,11 @@ public class Main {
         Service s = new Service();
         //s.initialiserEmployes();
         s.initialiserIntervenants();
+        s.initialiserMatieres();
+        
+        testerListerToutesMatieres(s);
+        
+        //testerAuthentifierIntervenantMail("adrien.alphabet@insa-lyon.fr", "mdp1", s);
         
         // TESTER CREATION INTERVENANTS : creer contexte persistance, valider transaction etc.
         
@@ -129,9 +135,46 @@ public class Main {
         System.out.println(FG_GREEN + e + RESET);
         System.out.println("===========================================\n");
     }
+    
+    
+    static void testerAuthentifierIntervenantMail(String mail, String mdp, Service s) {
+
+        Intervenant i = s.authentifierIntervenantMail(mail, mdp);
+
+        System.out.println("\n===========================================");
+        System.out.println(FG_GREEN + "Intervenant identifié par : mail - " + mail + " / mdp - " + mdp + RESET);
+
+        System.out.println(FG_GREEN + i + RESET);
+        System.out.println("===========================================\n");
+    }
+
+    static void testerAuthentifierIntervenantId(Long id, String mdp, Service s) {
+
+        Intervenant i = s.authentifierIntervenantId(id, mdp);
+
+        System.out.println("\n===========================================");
+        System.out.println(FG_GREEN + "Intervenant identifié par : id - " + id + " / mdp - " + mdp + RESET);
+
+        System.out.println(FG_GREEN + i + RESET);
+        System.out.println("===========================================\n");
+    }
+    
+    static void testerListerToutesMatieres(Service s) {
+        List<Matiere> mlist;
+        mlist = s.listerToutesMatieres();
+        System.out.println("\n===========================================");
+        System.out.println(FG_GREEN + "Liste des matières :" + RESET);
+        for (Matiere m : mlist) {
+            System.out.println(m);
+        }
+        System.out.println("===========================================\n");
+    }
 
     public static final String FG_GREEN = "\u001b[32m";
     public static final String FG_RED = "\u001b[31m";
     public static final String RESET = "\u001B[0m";
     public static final String FG_BLUE = "\u001b[34m";
 }
+
+
+

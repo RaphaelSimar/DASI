@@ -4,9 +4,11 @@ H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\metier\Service.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\metier\Employe.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\vue\Main.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\metier\Autre.java
+H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\dao\MatiereDao.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\metier\Etudiant.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\dao\EtablissementDao.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\metier\Etablissement.java
+H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\metier\Matiere.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\dao\IntervenantDao.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\dao\JpaUtil.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\dao\EducNetApi.java

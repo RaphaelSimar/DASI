@@ -11,6 +11,7 @@ import dao.JpaUtil;
 import dao.EmployeDao;
 import dao.EtablissementDao;
 import dao.IntervenantDao;
+import dao.MatiereDao;
 import java.io.IOException;
 import java.util.List;
 
@@ -321,6 +322,7 @@ public class Service {
         }
         return result;
     }
+
     /* -------------------INTERVENANTS------------------- */
     public boolean ajouterIntervenant(Intervenant i) {
         IntervenantDao idao = new IntervenantDao();
@@ -363,22 +365,146 @@ public class Service {
         }
         return i;
     }
-    
-    public void initialiserIntervenants() {
+
+    public boolean initialiserIntervenants() {
         // login, nom, prénom, niveau min, niveau max, téléphone, mail, mdp, disponible, nbInterventions
-        Intervenant i1 = new Intervenant( "aavion", "avion", "adrien", 5, 4, "0100000000",  "adrien.avion@insa-lyon.fr",  "mdp1",  true,  8);
-        Intervenant i2 = new Intervenant( "bbouteille", "bouteille", "baptiste", 6, 3, "0200000000",  "bapiste.bouteille@insa.fr",  "mdp2",  true,  18);
-        Intervenant i3 = new Intervenant( "cchapeau", "chapeau", "coralie", 2, 0, "0300000000",  "coralie.chapeau@insa.fr",  "mdp3",  true,  4);
-        Intervenant i4 = new Intervenant( "ddivision", "division", "donald", 4, 0, "0400000000",  "donald.division@insa.fr",  "mdp4",  true,  53);
-        Intervenant i5 = new Intervenant( "eecharpe", "ehcarpe", "emilie", 6, 5, "0500000000",  "emlilie.ehcarpe@insa.fr",  "mdp5",  true,  1);
-        Intervenant i6 = new Intervenant( "fflute", "flute", "flore", 6, 5, "0600000000",  "flore.flute@insa.fr",  "mdp6",  true,  6);
-       
-        ajouterIntervenant(i1);
-        ajouterIntervenant(i2);
-        ajouterIntervenant(i3);
-        ajouterIntervenant(i4);
-        ajouterIntervenant(i5);
-        ajouterIntervenant(i6);
+        Intervenant i1 = new Intervenant("aalphabet", "alphabet", "adrien", 5, 4, "0100000000", "adrien.alphabet@insa-lyon.fr", "mdp1", true, 8);
+        Intervenant i2 = new Intervenant("bbouteille", "bouteille", "baptiste", 6, 3, "0200000000", "bapiste.bouteille@insa.fr", "mdp2", true, 18);
+        Intervenant i3 = new Intervenant("cchapeau", "chapeau", "coralie", 2, 0, "0300000000", "coralie.chapeau@insa.fr", "mdp3", true, 4);
+        Intervenant i4 = new Intervenant("ddivision", "division", "donald", 4, 0, "0400000000", "donald.division@insa.fr", "mdp4", true, 53);
+        Intervenant i5 = new Intervenant("eecharpe", "ehcarpe", "emilie", 6, 5, "0500000000", "emlilie.ehcarpe@insa.fr", "mdp5", true, 1);
+        Intervenant i6 = new Intervenant("fflute", "flute", "flore", 6, 5, "0600000000", "flore.flute@insa.fr", "mdp6", true, 6);
+
+        IntervenantDao idao = new IntervenantDao();
+
+        boolean result;
+
+        try {
+            JpaUtil.creerContextePersistance();
+            JpaUtil.ouvrirTransaction();
+            idao.create(i1);
+            idao.create(i2);
+            idao.create(i3);
+            idao.create(i4);
+            idao.create(i5);
+            idao.create(i6);
+            JpaUtil.validerTransaction();
+            System.out.println("Trace : succès ajout intervenants");
+            result = true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            result = false;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return result;
     }
 
+    public Intervenant authentifierIntervenantMail(String mail, String mdp) {
+        IntervenantDao idao = new IntervenantDao();
+        Intervenant i = new Intervenant();
+
+        try {
+
+            JpaUtil.creerContextePersistance();
+            i = idao.authenticateIntervenantMail(mail, mdp);
+            System.out.println("Trace : succès authentification " + i.getMail());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            i = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return i;
+    }
+
+    public Intervenant authentifierIntervenantId(Long id, String mdp) {
+        IntervenantDao idao = new IntervenantDao();
+        Intervenant i = new Intervenant();
+
+        try {
+
+            JpaUtil.creerContextePersistance();
+            i = idao.authenticateIntervenantId(id, mdp);
+            System.out.println("Trace : succès authentification " + i.getId());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            i = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return i;
+    }
+
+    /* -------------------MATIERES------------------- */
+    public boolean initialiserMatieres() {
+        Matiere fra = new Matiere("Français");
+        Matiere mat = new Matiere("Mathématiques");
+        Matiere hig = new Matiere("Histoire-Géographie");
+        Matiere phc = new Matiere("Physique-Chimie");
+        Matiere svt = new Matiere("SVT");
+        Matiere emc = new Matiere("Education morale et civique");
+        Matiere ses = new Matiere("SES");
+        Matiere tec = new Matiere("Technologie");
+        Matiere ang = new Matiere("Anglais");
+        Matiere esp = new Matiere("Espagnol");
+        Matiere all = new Matiere("Allemand");
+        Matiere lat = new Matiere("Latin");
+        Matiere gre = new Matiere("Grec");
+
+        MatiereDao mdao = new MatiereDao();
+
+        boolean result;
+
+        try {
+            JpaUtil.creerContextePersistance();
+            JpaUtil.ouvrirTransaction();
+            mdao.create(fra);
+            mdao.create(mat);
+            mdao.create(hig);
+            mdao.create(phc);
+            mdao.create(svt);
+            mdao.create(emc);
+            mdao.create(ses);
+            mdao.create(tec);
+            mdao.create(ang);
+            mdao.create(esp);
+            mdao.create(all);
+            mdao.create(lat);
+            mdao.create(gre);
+            JpaUtil.validerTransaction();
+            System.out.println("Trace : succès ajout matières");
+            result = true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            result = false;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return result;
+    }
+
+    public List<Matiere> listerToutesMatieres() {
+        MatiereDao edao = new MatiereDao();
+        List<Matiere> mat;
+
+        try {
+
+            JpaUtil.creerContextePersistance();
+            mat = edao.getAllMatieres();
+            System.out.println("Trace : succès lister toutes les matières");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            mat = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return mat;
+
+    }
 }
