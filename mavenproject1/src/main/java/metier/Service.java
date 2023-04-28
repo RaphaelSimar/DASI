@@ -178,9 +178,9 @@ public class Service {
         }
 
         if (result) {
-            envoyerMail("toto@mail.com", eleve.getMail(), "Confirmation inscription", "Votre inscription à Instruct'IF est validée.");
+            envoyerMail("contact@instruct.if", eleve.getMail(), "Bienvenue sur le réseau INSTRUCT'IF", "Bonjour " + eleve.getPrenom() + ", nous te confirmons ton inscription sur le réseau INSTRUCT'IF.\nSi tu as besoin de soutien pour tes leçons ou tes devoirs, rends-toi sur notre site pour une mise en relation avec un intervenant.");
         } else {
-            envoyerMail("toto@mail.com", eleve.getMail(), "Echec inscription", "Votre inscription à Instruct'IF a malheureusement rencontré une erreur. Merci de réessayer.");
+            envoyerMail("contact@instruct.if", eleve.getMail(), "Echec de l'inscription sur le réseau INSTRUCT'IF", "Bonjour " + eleve.getPrenom() + ", ton insription sur le réseau INSTRUCT'IF a malencontreusement échoué...\nMerci de recommencer ultérieurement.");
         }
 
         return result;
