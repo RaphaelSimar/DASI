@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.List;
 import javax.persistence.TypedQuery;
 import metier.Eleve;
 
@@ -44,6 +45,12 @@ public class EleveDao {
         query.setParameter("id", id);
         query.setParameter("mdp", mdp);
         return (Eleve)query.getSingleResult();
-    }    
+    }
+    
+    public List<Eleve> listAllEleves() {
+        String s = "SELECT e FROM Eleve e ORDER BY e.nom";
+        TypedQuery query = JpaUtil.obtenirContextePersistance().createQuery(s,Eleve.class);
+        return query.getResultList();
+    }
     
 }

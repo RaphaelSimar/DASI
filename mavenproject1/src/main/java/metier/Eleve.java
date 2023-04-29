@@ -115,7 +115,7 @@ public class Eleve implements Serializable {
 
     @Override
     public String toString() {
-        return "Eleve{" + "dateNaissance=" + dateNaissance + ", id=" + id + ", Etablissement=" + etablissement + ", niveau=" + niveau + ", nom=" + nom + ", prenom=" + prenom + ", mail=" + mail + ", mdp=" + mdp + ", adressePostale=" + adressePostale + '}';
+        return "Eleve : " + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", niveau=" + niveau + ", mail=" + mail + ", mdp=" + mdp + ", dateNaissance=" + dateNaissance +  ", Etablissement=" + etablissement.getNom() + ", uaiEtablissement=" + etablissement.getUai() + ", adressePostale=" + adressePostale;
     }
 
     public Eleve() {

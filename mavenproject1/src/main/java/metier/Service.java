@@ -243,6 +243,26 @@ public class Service {
         }
         return e;
     }
+    
+    public List<Eleve> listerTousEleves() {
+        EleveDao edao = new EleveDao();
+        List<Eleve> e;
+
+        try {
+
+            JpaUtil.creerContextePersistance();
+            e = edao.listAllEleves();
+            System.out.println("Trace : succès lister tous les employés");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            e = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return e;
+
+    }
 
     /* -------------------ETABLISSEMENTS ------------------- */
     public Etablissement trouverEtablissementParUai(String uai) {
@@ -464,6 +484,25 @@ public class Service {
         return i;
     }
     
+    public List<Intervenant> listerTousIntervenants() {
+        IntervenantDao idao = new IntervenantDao();
+        List<Intervenant> i;
+
+        try {
+
+            JpaUtil.creerContextePersistance();
+            i = idao.listAllIntervenants();
+            System.out.println("Trace : succès lister tous les employés");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            i = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return i;
+
+    }
     
     /* -------------------MATIERES------------------- */
 

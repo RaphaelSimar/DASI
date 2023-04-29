@@ -37,10 +37,10 @@ public class Main {
         //s.initialiserEmployes();
         s.initialiserIntervenants();
         s.initialiserMatieres();
-        testerInscriptionEleve(s);
+        //testerInscriptionEleve(s);
 
         //testerAuthentifierEleveMailSaisie(s);
-        testerAuthentifierIntervenantMailSaisie(s);
+        //testerAuthentifierIntervenantMailSaisie(s);
         //testerInscriptionEleveSaisie(s);
 
         //testerListerToutesMatieres(s);
@@ -66,6 +66,62 @@ public class Main {
         testerAuthentifierEleveId(Long.valueOf(8), "mdpamoi", s);
         // ========================================= // */
         //testerInscriptionEleve(s);
+        
+        /* ------------- MENU ------------- */
+        int choix = -1;
+
+        while (choix != 0) {
+            System.out.println(FG_GREEN + "\n================= Menu ====================" + RESET);
+            System.out.println(FG_GREEN + "1. " + RESET + "Inscrire un élève");
+            System.out.println(FG_GREEN + "2. " + RESET + "Authentifier un élève");
+            System.out.println(FG_GREEN + "3. " + RESET + "Authentifier un intervenant");
+            System.out.println(FG_GREEN + "4. " + RESET + "Générer inscriptions élèves");
+            System.out.println(FG_GREEN + "5. " + RESET + "Lister toutes les matières");
+            System.out.println(FG_GREEN + "6. " + RESET + "Lister tous les élèves");
+            System.out.println(FG_GREEN + "7. " + RESET + "Lister tous les intervenants");
+            System.out.println(FG_GREEN + "0. " + FG_RED + "Quitter" + RESET);
+            System.out.println(FG_GREEN + "===========================================" + RESET);
+            
+            List<Integer> valeursPossibles = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7);
+            choix = lireInteger("Entrez votre choix : ", valeursPossibles);
+
+            switch (choix) {
+                case 1:
+                    System.out.println(FG_GREEN + "Vous avez choisi l'inscription élève." + RESET);
+                    testerInscriptionEleveSaisie(s);
+                    break;
+                case 2:
+                    System.out.println(FG_GREEN + "Vous avez choisi l'authentification élève." + RESET);
+                    testerAuthentifierEleveMailSaisie(s);
+                    break;
+                case 3:
+                    System.out.println(FG_GREEN + "Vous avez choisi l'authentification intervenant." + RESET);
+                    testerAuthentifierIntervenantMailSaisie(s);
+                    break;
+                case 4:
+                    System.out.println(FG_GREEN + "Vous avez choisi la génération d'inscriptions d'élèves." + RESET);
+                    testerInscriptionEleve(s);
+                    break;
+                case 5:
+                    System.out.println(FG_GREEN + "Vous avez choisi de lister toutes les matières." + RESET);
+                    testerListerToutesMatieres(s);
+                    break;
+                case 6:
+                    System.out.println(FG_GREEN + "Vous avez choisi de lister tous les élèves." + RESET);
+                    testerListerTousEleves(s);
+                    break;
+                case 7:
+                    System.out.println(FG_GREEN + "Vous avez choisi de lister tous les intervenants." + RESET);
+                    testerListerTousIntervenants(s);
+                    break;
+                case 0:
+                    System.out.println(FG_RED + "\nFermeture de l'application." + RESET);
+                    break;
+                default:
+                    System.out.println(FG_RED + "Choix invalide." + RESET);
+                    break;
+            }
+        }
     }
 
     static void testerTrouverEmployeParId(Long id, Service s) {
@@ -118,7 +174,7 @@ public class Main {
         String nom = lireChaine("Nom : ");
         String prenom = lireChaine("Prénom : ");
         String dateNaissance = lireChaine("Date de naissance (format jj/mm/aaaa) : ");
-        String codeEtablissement = lireChaine("Code établissement (ex : 0780656P) : ");
+        String codeEtablissement = lireChaine("Code établissement (ex : 0640126P) : ");
         List<Integer> valeursPossibles = Arrays.asList(0, 1, 2, 3, 4, 5, 6);
         Integer niveau = lireInteger("Niveau (6 pour 6ème, 0 pour terminale)", valeursPossibles);
         String adresseMail = lireChaine("Adresse e-mail : ");
@@ -148,6 +204,7 @@ public class Main {
         
         if (eleveConnecte != null) {
             testerAffichageProfilEleve(eleveConnecte);
+            String temp = lireChaine("Tapez n'importe quoi pour continuer");
         } else {
             System.out.println(FG_RED + "\n===========================================" + RESET);
             System.out.println(FG_RED + "ERREUR : Échec de la connexion : adresse e-mail et/ou mot de passe invalide(s)." + RESET);
@@ -210,6 +267,23 @@ public class Main {
         System.out.println("===========================================\n");
 
     }
+    
+    static void testerListerTousEleves(Service s) {
+        List<Eleve> elist;
+        elist = s.listerTousEleves();
+        if (elist.size() > 0) {
+            System.out.println(FG_GREEN + "\n===========================================" + RESET);
+            System.out.println(FG_GREEN + "Liste des élèves :" + RESET);
+            for (Eleve e : elist) {
+                System.out.println(e);
+            }
+            System.out.println(FG_GREEN + "===========================================\n" + RESET);
+            String temp = lireChaine("Tapez n'importe quoi pour continuer");
+        }
+        else {
+            System.out.println(FG_RED + "\nERREUR : Aucun élève n'est inscrit." + RESET);
+        }
+    }
 
     /* -------------------INTERVENANTS------------------- */
     static void testerAuthentifierIntervenantMail(String mail, String mdp, Service s) {
@@ -246,6 +320,7 @@ public class Main {
         Intervenant intervenantConnecte = s.authentifierIntervenantMail(adresseMail, mdp);
         if (intervenantConnecte != null) {
             testerAffichageProfilIntervenant(intervenantConnecte);
+            String temp = lireChaine("Tapez n'importe quoi pour continuer");
         } else {
             System.out.println(FG_RED + "\n===========================================" + RESET);
             System.out.println(FG_RED + "ERREUR : Échec de la connexion : adresse e-mail et/ou mot de passe invalide(s)." + RESET);
@@ -283,16 +358,35 @@ public class Main {
             
             System.out.println("===========================================\n");
     }
+    
+    static void testerListerTousIntervenants(Service s) {
+        List<Intervenant> ilist;
+        ilist = s.listerTousIntervenants();
+        if (ilist.size() > 0) {
+            System.out.println(FG_GREEN + "\n===========================================" + RESET);
+            System.out.println(FG_GREEN + "Liste des intervenants :" + RESET);
+            for (Intervenant e : ilist) {
+                System.out.println(e);
+            }
+            System.out.println(FG_GREEN + "===========================================\n" + RESET);
+            String temp = lireChaine("Tapez n'importe quoi pour continuer");
+        }
+        else {
+            System.out.println(FG_RED + "\nERREUR : Aucun intervenant n'est inscrit." + RESET);
+        }
+    }
+    
     /* -------------------MATIERES------------------- */
     static void testerListerToutesMatieres(Service s) {
         List<Matiere> mlist;
         mlist = s.listerToutesMatieres();
-        System.out.println("\n===========================================");
+        System.out.println(FG_GREEN + "\n===========================================" + RESET);
         System.out.println(FG_GREEN + "Liste des matières :" + RESET);
         for (Matiere m : mlist) {
             System.out.println(m);
         }
-        System.out.println("===========================================\n");
+        System.out.println(FG_GREEN + "===========================================\n" + RESET);
+        String temp = lireChaine("Tapez n'importe quoi pour continuer");
     }
 
     /* -------------------SOUTIENS------------------- */
