@@ -369,13 +369,19 @@ public class Service {
 
     public boolean initialiserIntervenants() {
         // login, nom, prénom, niveau min, niveau max, téléphone, mail, mdp, disponible, nbInterventions
+        /*
         Intervenant i1 = new Intervenant("aalphabet", "alphabet", "adrien", 5, 4, "0100000000", "adrien.alphabet@insa-lyon.fr", "mdp1", true, 8);
         Intervenant i2 = new Intervenant("bbouteille", "bouteille", "baptiste", 6, 3, "0200000000", "bapiste.bouteille@insa.fr", "mdp2", true, 18);
         Intervenant i3 = new Intervenant("cchapeau", "chapeau", "coralie", 2, 0, "0300000000", "coralie.chapeau@insa.fr", "mdp3", false, 4);
         Intervenant i4 = new Intervenant("ddivision", "division", "donald", 4, 0, "0400000000", "donald.division@insa.fr", "mdp4", true, 53);
         Intervenant i5 = new Intervenant("eecharpe", "ehcarpe", "emilie", 6, 5, "0500000000", "emlilie.ehcarpe@insa.fr", "mdp5", false, 1);
         Intervenant i6 = new Intervenant("fflute", "flute", "flore", 6, 5, "0600000000", "flore.flute@insa.fr", "mdp6", true, 6);
-
+        */
+        Intervenant i1 = new Etudiant("Sorbonne", "Langues orientales", "cmartin","Camille", "Martin", 6, 3, "0655447788", "camille.martin@gmail.com", "mdp1", true, 8);
+        Intervenant i2 = new Enseignant("Supérieur", "azola", "Zola", "Anna", 6, 0, "0633221144", "anna.zola@gmail.com", "mdp2", true, 18);
+        Intervenant i3 = new Enseignant("Collège", "hemile", "Hugo", "Emile", 3, 3, "0788559944", "emile.hugo@gmail.com", "mdp3", true, 4);
+        Intervenant i4 = new Autre("Retraité", "syourcenar", "Yourcenar", "Simone", 5, 1, "0722447744", "simone.yourcenar@gmail.com", "mdp4", true, 53);
+        
         IntervenantDao idao = new IntervenantDao();
 
         boolean result;
@@ -387,8 +393,6 @@ public class Service {
             idao.create(i2);
             idao.create(i3);
             idao.create(i4);
-            idao.create(i5);
-            idao.create(i6);
             JpaUtil.validerTransaction();
             System.out.println("Trace : succès ajout intervenants");
             result = true;

@@ -11,10 +11,12 @@ H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\metier\Etablissement.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\metier\Matiere.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\dao\IntervenantDao.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\dao\JpaUtil.java
+H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\util\Saisie.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\dao\EducNetApi.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\metier\Enseignant.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\dao\SoutienDao.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\util\Message.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\dao\EleveDao.java
+H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\vue\Ints.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\metier\Soutien.java
 H:\Documents\3IF\DASI\TD1\mavenproject1\src\main\java\metier\Eleve.java

@@ -13,8 +13,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import metier.Autre;
 import metier.Eleve;
 import metier.Employe;
+import metier.Enseignant;
+import metier.Etudiant;
 import metier.Intervenant;
 import metier.Matiere;
 import metier.Service;
@@ -34,7 +37,6 @@ public class Main {
         //s.initialiserEmployes();
         s.initialiserIntervenants();
         s.initialiserMatieres();
-
         testerInscriptionEleve(s);
 
         //testerAuthentifierEleveMailSaisie(s);
@@ -136,37 +138,47 @@ public class Main {
     static void testerAuthentifierEleveMailSaisie(Service s) {
 
         System.out.println("\n===========================================");
-        System.out.println(FG_GREEN + "Bienvenue sur Instruct'IF ! Vous allez maintenant vous connectez en tant qu'élève." + RESET);
+        System.out.println(FG_GREEN + "Bienvenue sur Instruct'IF ! Vous allez maintenant vous connectez en tant qu'" + FG_RED + "élève" + FG_CYAN + "." + RESET);
 
         String adresseMail = lireChaine("Adresse e-mail : ");
         String mdp = lireChaine("Mot de passe : ");
         System.out.println("\n===========================================");
 
         Eleve eleveConnecte = s.authentifierEleveMail(adresseMail, mdp);
+        
         if (eleveConnecte != null) {
-            System.out.println("\n===========================================");
-
-            System.out.println(FG_CYAN + "Bienvenue " + eleveConnecte.getPrenom() + ". Voici ton profil :" + RESET);
-            System.out.println("Nom : " + FG_GREEN + eleveConnecte.getNom() + RESET);
-            System.out.println("Prénom : " + FG_GREEN + eleveConnecte.getPrenom() + RESET);
-            System.out.println("Date de naissance : " + FG_GREEN + eleveConnecte.getDateNaissance() + RESET);
-            System.out.println("Code établissement : " + FG_GREEN + eleveConnecte.getEtablissement().getUai() + RESET);
-            System.out.println("Niveau : " + FG_GREEN + eleveConnecte.getNiveau() + RESET);
-            System.out.println("E-mail : " + FG_GREEN + eleveConnecte.getMail() + RESET);
-            System.out.println("Mot de passe : " + FG_GREEN + eleveConnecte.getMdp() + RESET);
-
-            System.out.println("===========================================\n");
+            testerAffichageProfilEleve(eleveConnecte);
         } else {
+            System.out.println(FG_RED + "\n===========================================" + RESET);
             System.out.println(FG_RED + "ERREUR : Échec de la connexion : adresse e-mail et/ou mot de passe invalide(s)." + RESET);
         }
 
+    }
+    
+    static void testerAffichageProfilEleve(Eleve eleveConnecte) {
+        System.out.println("\n===========================================");
+
+        System.out.println(FG_CYAN + "Bienvenue " + eleveConnecte.getPrenom() + ". Voici ton profil :" + RESET);
+        System.out.println("Nom : " + FG_GREEN + eleveConnecte.getNom() + RESET);
+        System.out.println("Prénom : " + FG_GREEN + eleveConnecte.getPrenom() + RESET);
+        // On formate la date pour un meilleur rendu visuel
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        String strDate = formatter.format(eleveConnecte.getDateNaissance());
+        System.out.println("Date de naissance : " + FG_GREEN + strDate + RESET);
+        System.out.println("Code établissement : " + FG_GREEN + eleveConnecte.getEtablissement().getUai() + RESET);
+        System.out.println("Nom établissement : " + FG_GREEN + eleveConnecte.getEtablissement().getNom() + RESET);
+        System.out.println("Niveau : " + FG_GREEN + eleveConnecte.getNiveau() + RESET);
+        System.out.println("E-mail : " + FG_GREEN + eleveConnecte.getMail() + RESET);
+        System.out.println("Mot de passe : " + FG_GREEN + eleveConnecte.getMdp() + RESET);
+
+        System.out.println("===========================================\n");
     }
 
     static void testerInscriptionEleve(Service s) {
 
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Eleve e1 = new Eleve(dateFormat.parse("11/06/2002"), 6, "SIMAR", "Raphael", "simar.raphael@laposte.net", "mdp1", "3ter chemin des boubibou");
+            Eleve e1 = new Eleve(dateFormat.parse("11/06/2002"), 6, "SIMAR", "Raphaël", "simar.raphael@laposte.net", "mdp1", "3ter chemin des boubibou");
             Eleve e2 = new Eleve(dateFormat.parse("06/08/2001"), 5, "BORG", "Lina", "borg.lina@laposte.net", "mdp2", "Sous l'océan");
             Eleve e3 = new Eleve(dateFormat.parse("01/01/2000"), 1, "LASALLE", "Jean", "lasalle.jean@laposte.net", "mdp3", "Lourdios");
             s.inscriptionEleve(e1, "0780656P");
@@ -225,7 +237,7 @@ public class Main {
     static void testerAuthentifierIntervenantMailSaisie(Service s) {
 
         System.out.println("\n===========================================");
-        System.out.println(FG_GREEN + "Bienvenue sur Instruct'IF ! Vous allez maintenant vous connectez en tant qu'intervenant." + RESET);
+        System.out.println(FG_GREEN + "Bienvenue sur Instruct'IF ! Vous allez maintenant vous connectez en tant qu'" + FG_RED + "intervenant" + FG_CYAN + "." + RESET);
 
         String adresseMail = lireChaine("Adresse e-mail : ");
         String mdp = lireChaine("Mot de passe : ");
@@ -233,6 +245,14 @@ public class Main {
 
         Intervenant intervenantConnecte = s.authentifierIntervenantMail(adresseMail, mdp);
         if (intervenantConnecte != null) {
+            testerAffichageProfilIntervenant(intervenantConnecte);
+        } else {
+            System.out.println(FG_RED + "\n===========================================" + RESET);
+            System.out.println(FG_RED + "ERREUR : Échec de la connexion : adresse e-mail et/ou mot de passe invalide(s)." + RESET);
+        }
+    }
+
+    static void testerAffichageProfilIntervenant(Intervenant intervenantConnecte) {
             System.out.println("\n===========================================");
 
             System.out.println(FG_CYAN + "Bienvenue " + intervenantConnecte.getPrenom() + ". Voici ton profil :" + RESET);
@@ -243,13 +263,26 @@ public class Main {
             System.out.println("Téléphone : " + FG_GREEN + intervenantConnecte.getTelephone() + RESET);
             System.out.println("E-mail : " + FG_GREEN + intervenantConnecte.getMail() + RESET);
             System.out.println("Mot de passe : " + FG_GREEN + intervenantConnecte.getMdp() + RESET);
-
+            
+            System.out.println(FG_CYAN + "\nVous êtes un intervenant de type " + FG_RED + intervenantConnecte.getClass().getSimpleName() + FG_CYAN + " : " + RESET);
+            switch(intervenantConnecte.getClass().getSimpleName()) {
+                case "Etudiant":
+                    Etudiant etudiantConnecte = (Etudiant)intervenantConnecte;
+                    System.out.println("Université : " + FG_GREEN + etudiantConnecte.getUniversite() + RESET);
+                    System.out.println("Spécialité : " + FG_GREEN + etudiantConnecte.getSpecialite() + RESET);
+                    break;
+                case "Enseignant":
+                    Enseignant enseignantConnecte = (Enseignant)intervenantConnecte;
+                    System.out.println("Type d'établissement d'exercice : " + FG_GREEN + enseignantConnecte.getTypeEtablissement() + RESET);
+                    break;
+                case "Autre":
+                    Autre autreConnecte = (Autre)intervenantConnecte;
+                    System.out.println("Activité : " + FG_GREEN + autreConnecte.getActivite() + RESET);
+                    break;
+            }
+            
             System.out.println("===========================================\n");
-        } else {
-            System.out.println(FG_RED + "ERREUR : Échec de la connexion : adresse e-mail et/ou mot de passe invalide(s)." + RESET);
-        }
     }
-
     /* -------------------MATIERES------------------- */
     static void testerListerToutesMatieres(Service s) {
         List<Matiere> mlist;
