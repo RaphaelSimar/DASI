@@ -22,6 +22,7 @@ import metier.Intervenant;
 import metier.Matiere;
 import metier.Service;
 import metier.Soutien;
+import static util.Message.envoyerNotification;
 import static util.Saisie.lireChaine;
 import static util.Saisie.lireInteger;
 
@@ -78,55 +79,76 @@ public class Main {
             if (intervenantConnecte != null) {
                 System.out.println(FG_CYAN + "Intervenant connecté : " + intervenantConnecte.getNom() + " " + intervenantConnecte.getPrenom() + " de type " + intervenantConnecte.getClass().getSimpleName());
             }
-            System.out.println(FG_GREEN + "1. " + RESET + "Inscrire un élève");
-            System.out.println(FG_GREEN + "2. " + RESET + "Authentifier un élève");
-            System.out.println(FG_GREEN + "3. " + RESET + "Authentifier un intervenant");
-            System.out.println(FG_GREEN + "4. " + RESET + "Générer inscriptions élèves");
-            System.out.println(FG_GREEN + "5. " + RESET + "Lister toutes les matières");
-            System.out.println(FG_GREEN + "6. " + RESET + "Lister tous les élèves");
-            System.out.println(FG_GREEN + "7. " + RESET + "Lister tous les intervenants");
-            System.out.println(FG_GREEN + "8. " + RESET + "Effectuer une demande de soutien (côté Élève)");
-            System.out.println(FG_GREEN + "9. " + RESET + "Lister tous les soutiens");
-            System.out.println(FG_GREEN + "0. " + FG_RED + "Quitter" + RESET);
+            System.out.println(FG_GREEN + "1.  " + RESET + "Générer inscriptions élèves");
+            System.out.println(FG_GREEN + "2.  " + RESET + "Générer soutiens");
+            System.out.println(FG_GREEN + "3.  " + RESET + "Inscrire un élève");
+            System.out.println(FG_GREEN + "4.  " + RESET + "Authentifier un élève");
+            System.out.println(FG_GREEN + "5.  " + RESET + "Authentifier un intervenant");
+            System.out.println(FG_GREEN + "6.  " + RESET + "Effectuer une demande de soutien (côté Élève)");
+            System.out.println(FG_GREEN + "7.  " + RESET + "Effectuer une réception de soutien (côté Intervenant)");
+            System.out.println(FG_GREEN + "8.  " + RESET + "Voir son historique de soutiens (élève)");
+            System.out.println(FG_GREEN + "9.  " + RESET + "Voir son historique de soutiens (intervenant)");
+            System.out.println(FG_GREEN + "10. " + RESET + "Lister toutes les matières");
+            System.out.println(FG_GREEN + "11. " + RESET + "Lister tous les élèves");
+            System.out.println(FG_GREEN + "12. " + RESET + "Lister tous les intervenants");
+            System.out.println(FG_GREEN + "13. " + RESET + "Lister tous les soutiens");
+            System.out.println(FG_GREEN + "0.  " + FG_RED + "Quitter" + RESET);
             System.out.println(FG_GREEN + "===========================================" + RESET);
 
-            List<Integer> valeursPossibles = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+            List<Integer> valeursPossibles = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
             choix = lireInteger("Entrez votre choix : ", valeursPossibles);
 
             switch (choix) {
+
                 case 1:
-                    System.out.println(FG_GREEN + "Vous avez choisi l'inscription élève." + RESET);
-                    testerInscriptionEleveSaisie(s);
-                    break;
-                case 2:
-                    System.out.println(FG_GREEN + "Vous avez choisi l'authentification élève." + RESET);
-                    eleveConnecte = testerAuthentifierEleveMailSaisie(s);
-                    break;
-                case 3:
-                    System.out.println(FG_GREEN + "Vous avez choisi l'authentification intervenant." + RESET);
-                    intervenantConnecte = testerAuthentifierIntervenantMailSaisie(s);
-                    break;
-                case 4:
                     System.out.println(FG_GREEN + "Vous avez choisi la génération d'inscriptions d'élèves." + RESET);
                     testerInscriptionEleve(s);
                     break;
+                case 2:
+                    System.out.println(FG_GREEN + "Vous avez choisi la génération de soutiens" + RESET);
+                    testerGenererSoutiens(s);
+                    break;
+                case 3:
+                    System.out.println(FG_GREEN + "Vous avez choisi l'inscription élève." + RESET);
+                    testerInscriptionEleveSaisie(s);
+                    break;
+                case 4:
+                    System.out.println(FG_GREEN + "Vous avez choisi l'authentification élève." + RESET);
+                    eleveConnecte = testerAuthentifierEleveMailSaisie(s);
+                    break;
                 case 5:
-                    System.out.println(FG_GREEN + "Vous avez choisi de lister toutes les matières." + RESET);
-                    testerListerToutesMatieres(s);
+                    System.out.println(FG_GREEN + "Vous avez choisi l'authentification intervenant." + RESET);
+                    intervenantConnecte = testerAuthentifierIntervenantMailSaisie(s);
                     break;
                 case 6:
-                    System.out.println(FG_GREEN + "Vous avez choisi de lister tous les élèves." + RESET);
-                    testerListerTousEleves(s);
-                    break;
-                case 7:
-                    System.out.println(FG_GREEN + "Vous avez choisi de lister tous les intervenants." + RESET);
-                    testerListerTousIntervenants(s);
-                    break;
-                case 8:
                     System.out.println(FG_GREEN + "Vous avez choisi d'effectuer une demande de soutien (côté élève)." + RESET);
                     testerDemandeSoutienSaisie(s, eleveConnecte);
                     break;
+                case 7:
+                    System.out.println(FG_GREEN + "Vous avez choisi d'effectuer une réception de soutien (côté intervenant)." + RESET);
+                    testerReceptionDemandeSoutienSaisie(s);
+                    break;
+                case 8:
+                    System.out.println(FG_GREEN + "Vous avez choisi de voir l'historique de soutiens (en tant qu'élève)." + RESET);
+                    testerVoirHistoriqueEleve(s, eleveConnecte);
+                    break;
                 case 9:
+                    System.out.println(FG_GREEN + "Vous avez choisi de voir l'historique de soutiens (côté en tant qu'intervenant)." + RESET);
+                    testerVoirHistoriqueIntervenant(s, intervenantConnecte);
+                    break;
+                case 10:
+                    System.out.println(FG_GREEN + "Vous avez choisi de lister toutes les matières." + RESET);
+                    testerListerToutesMatieres(s);
+                    break;
+                case 11:
+                    System.out.println(FG_GREEN + "Vous avez choisi de lister tous les élèves." + RESET);
+                    testerListerTousEleves(s);
+                    break;
+                case 12:
+                    System.out.println(FG_GREEN + "Vous avez choisi de lister tous les intervenants." + RESET);
+                    testerListerTousIntervenants(s);
+                    break;
+                case 13:
                     System.out.println(FG_GREEN + "Vous avez choisi de lister tous les soutiens." + RESET);
                     testerListerTousSoutiens(s);
                     break;
@@ -190,7 +212,7 @@ public class Main {
         String nom = lireChaine("Nom : ");
         String prenom = lireChaine("Prénom : ");
         String dateNaissance = lireChaine("Date de naissance (format jj/mm/aaaa) : ");
-        String codeEtablissement = lireChaine("Code établissement (ex : 0640126P) : ");
+        String codeEtablissement = lireChaine("Code établissement (ex : 0691664J) : ");
         List<Integer> valeursPossibles = Arrays.asList(0, 1, 2, 3, 4, 5, 6);
         Integer niveau = lireInteger("Niveau (6 pour 6ème, 0 pour terminale)", valeursPossibles);
         String adresseMail = lireChaine("Adresse e-mail : ");
@@ -300,6 +322,27 @@ public class Main {
         }
     }
 
+    static void testerVoirHistoriqueEleve(Service ser, Eleve eleve) {
+        while (eleve == null) {
+            System.out.println(FG_RED + "\nVeuillez d'abord vous authentifier en tant qu'élève." + RESET);
+            eleve = testerAuthentifierEleveMailSaisie(ser);
+        }
+        List<Soutien> slist;
+        slist = ser.listerSoutiensEleve(eleve);
+        if (slist.size() > 0) {
+            System.out.println(FG_GREEN + "\n===========================================" + RESET);
+            System.out.println(FG_GREEN + "Historique de vos soutiens :" + RESET);
+            for (Soutien s : slist) {
+                System.out.println(s);
+            }
+            System.out.println(FG_GREEN + "===========================================\n" + RESET);
+            String temp = lireChaine("Tapez n'importe quoi pour continuer");
+        } else {
+            System.out.println(FG_RED + "\nERREUR : Aucun soutien n'a été effectué." + RESET);
+        }
+
+    }
+
     /* -------------------INTERVENANTS------------------- */
     static void testerAuthentifierIntervenantMail(String mail, String mdp, Service s) {
 
@@ -374,6 +417,27 @@ public class Main {
         }
 
         System.out.println("===========================================\n");
+    }
+
+    static void testerVoirHistoriqueIntervenant(Service ser, Intervenant intervenant) {
+        while (intervenant == null) {
+            System.out.println(FG_RED + "\nVeuillez d'abord vous authentifier en tant qu'intervenant." + RESET);
+            intervenant = testerAuthentifierIntervenantMailSaisie(ser);
+        }
+        List<Soutien> slist;
+        slist = ser.listerSoutiensIntervenant(intervenant);
+        if (slist.size() > 0) {
+            System.out.println(FG_GREEN + "\n===========================================" + RESET);
+            System.out.println(FG_GREEN + "Historique de vos soutiens :" + RESET);
+            for (Soutien s : slist) {
+                System.out.println(s);
+            }
+            System.out.println(FG_GREEN + "===========================================\n" + RESET);
+            String temp = lireChaine("Tapez n'importe quoi pour continuer");
+        } else {
+            System.out.println(FG_RED + "\nERREUR : Aucun soutien n'a été effectué." + RESET);
+        }
+
     }
 
     static void testerListerTousIntervenants(Service s) {
@@ -455,6 +519,107 @@ public class Main {
                 soutien.setNote(note);
                 s.ajouterSoutien(soutien);
             }
+        }
+    }
+
+    static void testerReceptionDemandeSoutienSaisie(Service ser) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Eleve e = new Eleve(dateFormat.parse("15/09/2001"), 6, "Chaplin", "Charlie", "charlie.chaplin@gmail.com", "mdp", "???");
+            ser.inscriptionEleve(e, "0691664J");
+
+            Soutien s = new Soutien(e, ser.trouverMatiereParId(Long.valueOf(8)), "J'aurais besoin d'aide pour un DM");
+            Intervenant i = ser.trouverIntervenantParId(Long.valueOf(2));
+
+            envoyerNotification(i.getTelephone(), "Bonjour " + i.getPrenom() + ". Merci de prendre en charge la demande de soutien en '" + s.getMatiere().getNom() + "' demandée à " + s.getEmissionDemande() + " par " + e.getPrenom() + " en classe de " + e.getNiveau());
+            s.setIntervenant(i);
+
+            Intervenant i2 = testerAuthentifierIntervenantMailSaisie(ser);
+            if (i2 != null) {
+                System.out.println(FG_RED + i.getPrenom() + ", vous avez une demande de soutien !" + RESET);
+                System.out.println("\n===========================================");
+
+                System.out.println(FG_CYAN + "Voici le profil de " + e.getPrenom() + " : " + RESET);
+                System.out.println("Nom : " + FG_GREEN + e.getNom() + RESET);
+                System.out.println("Prénom : " + FG_GREEN + e.getPrenom() + RESET);
+                // On formate la date pour un meilleur rendu visuel
+                SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                String strDate = formatter.format(e.getDateNaissance());
+                System.out.println("Date de naissance : " + FG_GREEN + strDate + RESET);
+                System.out.println("Code établissement : " + FG_GREEN + e.getEtablissement().getUai() + RESET);
+                System.out.println("Nom établissement : " + FG_GREEN + e.getEtablissement().getNom() + RESET);
+                System.out.println("Niveau : " + FG_GREEN + e.getNiveau() + RESET);
+                System.out.println("E-mail : " + FG_GREEN + e.getMail() + RESET);
+
+                System.out.println("\nMatière demandée : " + FG_GREEN + s.getMatiere().getNom() + RESET);
+                System.out.println("Descriptif de la demande : " + FG_GREEN + s.getDescription_demande() + RESET);
+
+                System.out.println("===========================================\n");
+                String temp = lireChaine("Tapez n'importe quoi pour accepter la demande");
+
+                s.setDebutSoutien(new Date());
+                i.setDisponible(false);
+                System.out.println(FG_GREEN + "Élève accompagné : " + e.getNom() + " " + e.getPrenom() + " de niveau " + e.getNiveau());
+                String temp2 = lireChaine(FG_GREEN + "==========VISIO EN COURS==========" + RESET + "\nTapez n'importe quoi pour y mettre fin.");
+                i.setDisponible(true);
+                s.setFinSoutien(new Date());
+                s.setNote(4);
+                ser.ajouterSoutien(s);
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    static void testerGenererSoutiens(Service ser) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Eleve e1 = new Eleve(dateFormat.parse("01/02/2003"), 0, "Hollande", "François", "francois.hollande@gmail.com", "mdp", "???");
+            Eleve e2 = new Eleve(dateFormat.parse("03/04/2005"), 1, "Sarkozy", "Nicolas", "nicolas.sarkozy@gmail.com", "mdp", "???");
+            Eleve e3 = new Eleve(dateFormat.parse("05/06/2007"), 3, "Obama", "Barack", "barack.obama@gmail.com", "mdp", "???");
+            ser.inscriptionEleve(e1, "0640126P");
+            ser.inscriptionEleve(e2, "0640126P"); //0641658E college Lina
+            ser.inscriptionEleve(e3, "0641658E");
+
+            Soutien s1 = new Soutien(e1, ser.trouverMatiereParId(Long.valueOf(8)), "Aidez-moi");
+            Intervenant i1 = ser.trouverIntervenantSoutien(s1.getEleve(), s1);
+            s1.setIntervenant(i1);
+
+            s1.setDebutSoutien(new Date());
+            // La visio est en cours
+            // L'élève met fin à la visio
+            s1.setFinSoutien(new Date());
+            // L'élève saisit la note à donner au soutien
+            s1.setNote(3);
+            ser.ajouterSoutien(s1);
+
+            Soutien s2 = new Soutien(e2, ser.trouverMatiereParId(Long.valueOf(9)), "Au secours");
+            Intervenant i2 = ser.trouverIntervenantSoutien(s2.getEleve(), s2);
+            s2.setIntervenant(i2);
+
+            s2.setDebutSoutien(new Date());
+            // La visio est en cours
+            // L'élève met fin à la visio
+            s2.setFinSoutien(new Date());
+            // L'élève saisit la note à donner au soutien
+            s2.setNote(4);
+            ser.ajouterSoutien(s2);
+
+            Soutien s3 = new Soutien(e3, ser.trouverMatiereParId(Long.valueOf(10)), "Help me");
+            Intervenant i3 = ser.trouverIntervenantSoutien(s3.getEleve(), s3);
+            s3.setIntervenant(i3);
+
+            s3.setDebutSoutien(new Date());
+            // La visio est en cours
+            // L'élève met fin à la visio
+            s3.setFinSoutien(new Date());
+            // L'élève saisit la note à donner au soutien
+            s3.setNote(5);
+            ser.ajouterSoutien(s3);
+
+        } catch (ParseException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

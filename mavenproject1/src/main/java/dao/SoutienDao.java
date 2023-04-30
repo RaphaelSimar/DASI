@@ -34,15 +34,15 @@ public class SoutienDao {
         return JpaUtil.obtenirContextePersistance().find(Soutien.class, id);
     }
     
-    public List<Soutien> listSoutienByEleve(Eleve e) {
-        String s = "SELECT s FROM Soutien s WHERE s.eleve = :e";
+    public List<Soutien> listSoutiensByEleve(Eleve e) {
+        String s = "SELECT s FROM Soutien s WHERE s.eleve = :e ORDER BY s.debutSoutien desc";
         TypedQuery query = JpaUtil.obtenirContextePersistance().createQuery(s,Soutien.class);
         query.setParameter("e", e);
         return query.getResultList();
     }
     
-    public List<Soutien> listSoutienByIntervenants(Intervenant i) {
-        String s = "SELECT s FROM Soutien s WHERE s.intervenant = :i";
+    public List<Soutien> listSoutiensByIntervenant(Intervenant i) {
+        String s = "SELECT s FROM Soutien s WHERE s.intervenant = :i ORDER BY s.debutSoutien desc";
         TypedQuery query = JpaUtil.obtenirContextePersistance().createQuery(s,Soutien.class);
         query.setParameter("i", i);
         return query.getResultList();
@@ -60,5 +60,6 @@ public class SoutienDao {
         TypedQuery query = JpaUtil.obtenirContextePersistance().createQuery(s,Soutien.class);
         return query.getResultList();
     }
+   
     
 }

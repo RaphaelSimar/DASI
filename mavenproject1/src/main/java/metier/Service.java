@@ -244,7 +244,26 @@ public class Service {
         }
         return e;
     }
-    
+        public List<Soutien> listerSoutiensEleve(Eleve e) {
+        SoutienDao sdao = new SoutienDao();
+        List<Soutien> s;
+
+        try {
+
+            JpaUtil.creerContextePersistance();
+            s = sdao.listSoutiensByEleve(e);
+            System.out.println("Trace : succès lister tous les soutiens de l'élève " + e.getId());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            s = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return s;
+
+    }
+
     public List<Eleve> listerTousEleves() {
         EleveDao edao = new EleveDao();
         List<Eleve> e;
@@ -253,7 +272,7 @@ public class Service {
 
             JpaUtil.creerContextePersistance();
             e = edao.listAllEleves();
-            System.out.println("Trace : succès lister tous les employés");
+            System.out.println("Trace : succès lister tous les élèves");
         } catch (Exception ex) {
             ex.printStackTrace();
             JpaUtil.annulerTransaction();
@@ -264,6 +283,7 @@ public class Service {
         return e;
 
     }
+
 
     /* -------------------ETABLISSEMENTS ------------------- */
     public Etablissement trouverEtablissementParUai(String uai) {
@@ -397,12 +417,12 @@ public class Service {
         Intervenant i4 = new Intervenant("ddivision", "division", "donald", 4, 0, "0400000000", "donald.division@insa.fr", "mdp4", true, 53);
         Intervenant i5 = new Intervenant("eecharpe", "ehcarpe", "emilie", 6, 5, "0500000000", "emlilie.ehcarpe@insa.fr", "mdp5", false, 1);
         Intervenant i6 = new Intervenant("fflute", "flute", "flore", 6, 5, "0600000000", "flore.flute@insa.fr", "mdp6", true, 6);
-        */
-        Intervenant i1 = new Etudiant("Sorbonne", "Langues orientales", "cmartin","Martin", "Camille", 6, 3, "0655447788", "camille.martin@gmail.com", "mdp1", false, 8);
+         */
+        Intervenant i1 = new Etudiant("Sorbonne", "Langues orientales", "cmartin", "Martin", "Camille", 6, 3, "0655447788", "camille.martin@gmail.com", "mdp1", false, 8);
         Intervenant i2 = new Enseignant("Supérieur", "azola", "Zola", "Anna", 6, 0, "0633221144", "anna.zola@gmail.com", "mdp2", true, 18);
-        Intervenant i3 = new Enseignant("Collège", "hemile", "Hugo", "Emile", 3, 3, "0788559944", "emile.hugo@gmail.com", "mdp3", true, 4);
-        Intervenant i4 = new Autre("Retraité", "syourcenar", "Yourcenar", "Simone", 5, 1, "0722447744", "simone.yourcenar@gmail.com", "mdp4", true, 53);
-        
+        Intervenant i3 = new Enseignant("Collège", "hemile", "Hugo", "Emile", 3, 3, "0788559944", "emile.hugo@gmail.com", "mdp3", true, 3);
+        Intervenant i4 = new Autre("Retraité", "syourcenar", "Yourcenar", "Simone", 5, 1, "0722447744", "simone.yourcenar@gmail.com", "mdp4", true, 4);
+
         IntervenantDao idao = new IntervenantDao();
 
         boolean result;
@@ -485,13 +505,33 @@ public class Service {
         } finally {
             JpaUtil.fermerContextePersistance();
         }
-        
+
         if (result) {
             envoyerNotification(i.getTelephone(), "Bonjour " + i.getPrenom() + ". Merci de prendre en charge la demande de soutien en '" + s.getMatiere().getNom() + "' demandée à " + s.getEmissionDemande() + " par " + e.getPrenom() + " en classe de " + e.getNiveau());
         }
         return i;
     }
-    
+
+    public List<Soutien> listerSoutiensIntervenant(Intervenant i) {
+        SoutienDao sdao = new SoutienDao();
+        List<Soutien> s;
+
+        try {
+
+            JpaUtil.creerContextePersistance();
+            s = sdao.listSoutiensByIntervenant(i);
+            System.out.println("Trace : succès lister tous les soutiens de l'intervenant " + i.getId());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            s = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return s;
+
+    }
+
     public List<Intervenant> listerTousIntervenants() {
         IntervenantDao idao = new IntervenantDao();
         List<Intervenant> i;
@@ -511,9 +551,8 @@ public class Service {
         return i;
 
     }
-    
-    /* -------------------MATIERES------------------- */
 
+    /* -------------------MATIERES------------------- */
     public boolean initialiserMatieres() {
         Matiere fra = new Matiere("Français");
         Matiere mat = new Matiere("Mathématiques");
@@ -622,7 +661,7 @@ public class Service {
         }
         return result;
     }
-    
+
     /* -------------------SOUTIENS------------------- */
     public List<Soutien> listerTousSoutiens() {
         SoutienDao sdao = new SoutienDao();
