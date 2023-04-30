@@ -244,7 +244,8 @@ public class Service {
         }
         return e;
     }
-        public List<Soutien> listerSoutiensEleve(Eleve e) {
+
+    public List<Soutien> listerSoutiensEleve(Eleve e) {
         SoutienDao sdao = new SoutienDao();
         List<Soutien> s;
 
@@ -455,7 +456,7 @@ public class Service {
 
             JpaUtil.creerContextePersistance();
             i = idao.authenticateIntervenantMail(mail, mdp);
-            System.out.println("Trace : succès authentification " + i.getMail());
+            System.out.println("Trace : succès authentification intervenant mail " + i.getMail());
         } catch (Exception ex) {
             ex.printStackTrace();
             JpaUtil.annulerTransaction();
@@ -474,7 +475,7 @@ public class Service {
 
             JpaUtil.creerContextePersistance();
             i = idao.authenticateIntervenantId(id, mdp);
-            System.out.println("Trace : succès authentification " + i.getId());
+            System.out.println("Trace : succès authentification intervenant id " + i.getId());
         } catch (Exception ex) {
             ex.printStackTrace();
             JpaUtil.annulerTransaction();
@@ -483,6 +484,47 @@ public class Service {
             JpaUtil.fermerContextePersistance();
         }
         return i;
+    }
+
+    public Intervenant authentifierIntervenantLogin(String login, String mdp) {
+        IntervenantDao idao = new IntervenantDao();
+        Intervenant i = new Intervenant();
+
+        try {
+
+            JpaUtil.creerContextePersistance();
+            i = idao.authenticateIntervenantLogin(login, mdp);
+            System.out.println("Trace : succès authentification intervenant login " + i.getLogin());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            i = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return i;
+    }
+
+    public boolean incrementerNbInterventions(Intervenant i) {
+        IntervenantDao idao = new IntervenantDao();
+        boolean result;
+
+        try {
+            i.incrementerNbInterventions();
+            JpaUtil.creerContextePersistance();
+            JpaUtil.ouvrirTransaction();
+            idao.update(i);
+            JpaUtil.validerTransaction();
+            System.out.println("Trace : succès mise à jour intervenant" + i);
+            result = true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            result = false;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return result;
     }
 
     public Intervenant trouverIntervenantSoutien(Eleve e, Soutien s) {

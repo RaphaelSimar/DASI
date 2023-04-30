@@ -48,6 +48,14 @@ public class IntervenantDao {
         return (Intervenant)query.getSingleResult();
     }
     
+    public Intervenant authenticateIntervenantLogin(String login, String mdp) {
+        String s = "SELECT i FROM Intervenant i WHERE i.mdp = :mdp AND i.login = :login";
+        TypedQuery query = JpaUtil.obtenirContextePersistance().createQuery(s,Intervenant.class);
+        query.setParameter("login", login);
+        query.setParameter("mdp", mdp);
+        return (Intervenant)query.getSingleResult();
+    }
+    
     public Intervenant findIntervenantSoutien(Eleve e) {
         Integer niveau = e.getNiveau();
         String s = "SELECT i FROM Intervenant i WHERE i.niveau_min >= :niveau AND i.niveau_max <= :niveau AND i.disponible = true ORDER BY i.nbInterventions asc";

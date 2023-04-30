@@ -88,14 +88,15 @@ public class Main {
             System.out.println(FG_GREEN + "7.  " + RESET + "Effectuer une réception de soutien (côté Intervenant)");
             System.out.println(FG_GREEN + "8.  " + RESET + "Voir son historique de soutiens (élève)");
             System.out.println(FG_GREEN + "9.  " + RESET + "Voir son historique de soutiens (intervenant)");
-            System.out.println(FG_GREEN + "10. " + RESET + "Lister toutes les matières");
-            System.out.println(FG_GREEN + "11. " + RESET + "Lister tous les élèves");
-            System.out.println(FG_GREEN + "12. " + RESET + "Lister tous les intervenants");
-            System.out.println(FG_GREEN + "13. " + RESET + "Lister tous les soutiens");
+            System.out.println(FG_GREEN + "10. " + RESET + "Consulter son tableau de bord (intervenant)");
+            System.out.println(FG_GREEN + "11. " + RESET + "Lister toutes les matières");
+            System.out.println(FG_GREEN + "12. " + RESET + "Lister tous les élèves");
+            System.out.println(FG_GREEN + "13. " + RESET + "Lister tous les intervenants");
+            System.out.println(FG_GREEN + "14. " + RESET + "Lister tous les soutiens");
             System.out.println(FG_GREEN + "0.  " + FG_RED + "Quitter" + RESET);
             System.out.println(FG_GREEN + "===========================================" + RESET);
 
-            List<Integer> valeursPossibles = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
+            List<Integer> valeursPossibles = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
             choix = lireInteger("Entrez votre choix : ", valeursPossibles);
 
             switch (choix) {
@@ -118,7 +119,7 @@ public class Main {
                     break;
                 case 5:
                     System.out.println(FG_GREEN + "Vous avez choisi l'authentification intervenant." + RESET);
-                    intervenantConnecte = testerAuthentifierIntervenantMailSaisie(s);
+                    intervenantConnecte = testerAuthentifierIntervenantLoginSaisie(s);
                     break;
                 case 6:
                     System.out.println(FG_GREEN + "Vous avez choisi d'effectuer une demande de soutien (côté élève)." + RESET);
@@ -137,18 +138,21 @@ public class Main {
                     testerVoirHistoriqueIntervenant(s, intervenantConnecte);
                     break;
                 case 10:
+                    // A FAIRE
+                    break;
+                case 11:
                     System.out.println(FG_GREEN + "Vous avez choisi de lister toutes les matières." + RESET);
                     testerListerToutesMatieres(s);
                     break;
-                case 11:
+                case 12:
                     System.out.println(FG_GREEN + "Vous avez choisi de lister tous les élèves." + RESET);
                     testerListerTousEleves(s);
                     break;
-                case 12:
+                case 13:
                     System.out.println(FG_GREEN + "Vous avez choisi de lister tous les intervenants." + RESET);
                     testerListerTousIntervenants(s);
                     break;
-                case 13:
+                case 14:
                     System.out.println(FG_GREEN + "Vous avez choisi de lister tous les soutiens." + RESET);
                     testerListerTousSoutiens(s);
                     break;
@@ -366,22 +370,22 @@ public class Main {
         System.out.println("===========================================\n");
     }
 
-    static Intervenant testerAuthentifierIntervenantMailSaisie(Service s) {
+    static Intervenant testerAuthentifierIntervenantLoginSaisie(Service s) {
 
         System.out.println("\n===========================================");
         System.out.println(FG_GREEN + "Bienvenue sur Instruct'IF ! Vous allez maintenant vous connectez en tant qu'" + FG_RED + "intervenant" + FG_CYAN + "." + RESET);
 
-        String adresseMail = lireChaine("Adresse e-mail : ");
+        String login = lireChaine("Login : ");
         String mdp = lireChaine("Mot de passe : ");
         System.out.println("\n===========================================");
 
-        Intervenant intervenantConnecte = s.authentifierIntervenantMail(adresseMail, mdp);
+        Intervenant intervenantConnecte = s.authentifierIntervenantLogin(login, mdp);
         if (intervenantConnecte != null) {
             testerAffichageProfilIntervenant(intervenantConnecte);
             String temp = lireChaine("Tapez n'importe quoi pour continuer");
         } else {
             System.out.println(FG_RED + "\n===========================================" + RESET);
-            System.out.println(FG_RED + "ERREUR : Échec de la connexion : adresse e-mail et/ou mot de passe invalide(s)." + RESET);
+            System.out.println(FG_RED + "ERREUR : Échec de la connexion : login et/ou mot de passe invalide(s)." + RESET);
         }
 
         return intervenantConnecte;
@@ -396,6 +400,7 @@ public class Main {
         System.out.println("Niveau(x) enseigné(s) : " + FG_GREEN + "De " + intervenantConnecte.getNiveau_min() + " à " + intervenantConnecte.getNiveau_max() + RESET);
         System.out.println("Nombres d'interventions : " + FG_GREEN + intervenantConnecte.getNbInterventions() + RESET);
         System.out.println("Téléphone : " + FG_GREEN + intervenantConnecte.getTelephone() + RESET);
+        System.out.println("Login : " + FG_GREEN + intervenantConnecte.getLogin() + RESET);
         System.out.println("E-mail : " + FG_GREEN + intervenantConnecte.getMail() + RESET);
         System.out.println("Mot de passe : " + FG_GREEN + intervenantConnecte.getMdp() + RESET);
 
@@ -422,7 +427,7 @@ public class Main {
     static void testerVoirHistoriqueIntervenant(Service ser, Intervenant intervenant) {
         while (intervenant == null) {
             System.out.println(FG_RED + "\nVeuillez d'abord vous authentifier en tant qu'intervenant." + RESET);
-            intervenant = testerAuthentifierIntervenantMailSaisie(ser);
+            intervenant = testerAuthentifierIntervenantLoginSaisie(ser);
         }
         List<Soutien> slist;
         slist = ser.listerSoutiensIntervenant(intervenant);
@@ -515,9 +520,10 @@ public class Main {
                 intervenant.setDisponible(true);
                 soutien.setFinSoutien(new Date());
                 List<Integer> valeursPossibles = Arrays.asList(1, 2, 3, 4, 5);
-                Integer note = lireInteger("Comment as-tu trouvé le soutien ? Note-le de 1 à 5 : ", valeursPossibles);
+                Integer note = lireInteger("\nComment as-tu trouvé le soutien ?\n1. Je n’ai rien compris…\n2. Je n’en sais pas beaucoup plus…\n3. Je commence à y voir plus clair.\n4. J’ai presque tout compris !\n5. J’ai tout compris !", valeursPossibles);
                 soutien.setNote(note);
                 s.ajouterSoutien(soutien);
+                s.incrementerNbInterventions(intervenant);
             }
         }
     }
@@ -534,7 +540,7 @@ public class Main {
             envoyerNotification(i.getTelephone(), "Bonjour " + i.getPrenom() + ". Merci de prendre en charge la demande de soutien en '" + s.getMatiere().getNom() + "' demandée à " + s.getEmissionDemande() + " par " + e.getPrenom() + " en classe de " + e.getNiveau());
             s.setIntervenant(i);
 
-            Intervenant i2 = testerAuthentifierIntervenantMailSaisie(ser);
+            Intervenant i2 = testerAuthentifierIntervenantLoginSaisie(ser);
             if (i2 != null) {
                 System.out.println(FG_RED + i.getPrenom() + ", vous avez une demande de soutien !" + RESET);
                 System.out.println("\n===========================================");
@@ -565,6 +571,7 @@ public class Main {
                 s.setFinSoutien(new Date());
                 s.setNote(4);
                 ser.ajouterSoutien(s);
+                ser.incrementerNbInterventions(i);
             }
         } catch (ParseException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -593,6 +600,7 @@ public class Main {
             // L'élève saisit la note à donner au soutien
             s1.setNote(3);
             ser.ajouterSoutien(s1);
+            ser.incrementerNbInterventions(i1);
 
             Soutien s2 = new Soutien(e2, ser.trouverMatiereParId(Long.valueOf(9)), "Au secours");
             Intervenant i2 = ser.trouverIntervenantSoutien(s2.getEleve(), s2);
@@ -605,6 +613,7 @@ public class Main {
             // L'élève saisit la note à donner au soutien
             s2.setNote(4);
             ser.ajouterSoutien(s2);
+            ser.incrementerNbInterventions(i2);
 
             Soutien s3 = new Soutien(e3, ser.trouverMatiereParId(Long.valueOf(10)), "Help me");
             Intervenant i3 = ser.trouverIntervenantSoutien(s3.getEleve(), s3);
@@ -617,6 +626,7 @@ public class Main {
             // L'élève saisit la note à donner au soutien
             s3.setNote(5);
             ser.ajouterSoutien(s3);
+            ser.incrementerNbInterventions(i3);
 
         } catch (ParseException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

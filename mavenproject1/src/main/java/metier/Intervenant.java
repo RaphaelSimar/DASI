@@ -51,6 +51,10 @@ public class Intervenant implements Serializable {
         this.disponible = disponible;
         this.nbInterventions = nbInterventions;
     }
+    
+    public void incrementerNbInterventions() {
+        this.nbInterventions++;
+    }
 
     public Long getId() {
         return id;
