@@ -132,7 +132,7 @@ public class Soutien implements Serializable {
 
     @Override
     public String toString() {
-        return "Soutien{" + "id=" + id + ", eleve=" + eleve + ", emissionDemande=" + emissionDemande + ", debutSoutien=" + debutSoutien + ", finSoutien=" + finSoutien + ", note=" + note + ", intervenant=" + intervenant + ", matiere=" + matiere + ", description_demande=" + description_demande + '}';
+        return "Soutien : " + "id=" + id + " | eleve=" + eleve.getNom() + " " + eleve.getPrenom() + " de niveau " + eleve.getNiveau() + " dont id=" + eleve.getId() + " | intervenant=" + intervenant.getNom() + " " + intervenant.getPrenom() + " de type " + intervenant.getClass().getSimpleName() + " dont id=" + intervenant.getId() + " | emissionDemande=" + emissionDemande + " | debutSoutien=" + debutSoutien + " | finSoutien=" + finSoutien + " | note=" + note + " | matiere=" + matiere.getNom() + " dont id=" + matiere.getId() + " | description_demande=" + description_demande;
     }
     
     

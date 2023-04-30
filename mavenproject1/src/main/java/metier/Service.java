@@ -21,6 +21,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import static util.Message.envoyerMail;
+import static util.Message.envoyerNotification;
 
 /**
  *
@@ -397,7 +398,7 @@ public class Service {
         Intervenant i5 = new Intervenant("eecharpe", "ehcarpe", "emilie", 6, 5, "0500000000", "emlilie.ehcarpe@insa.fr", "mdp5", false, 1);
         Intervenant i6 = new Intervenant("fflute", "flute", "flore", 6, 5, "0600000000", "flore.flute@insa.fr", "mdp6", true, 6);
         */
-        Intervenant i1 = new Etudiant("Sorbonne", "Langues orientales", "cmartin","Camille", "Martin", 6, 3, "0655447788", "camille.martin@gmail.com", "mdp1", true, 8);
+        Intervenant i1 = new Etudiant("Sorbonne", "Langues orientales", "cmartin","Martin", "Camille", 6, 3, "0655447788", "camille.martin@gmail.com", "mdp1", false, 8);
         Intervenant i2 = new Enseignant("Supérieur", "azola", "Zola", "Anna", 6, 0, "0633221144", "anna.zola@gmail.com", "mdp2", true, 18);
         Intervenant i3 = new Enseignant("Collège", "hemile", "Hugo", "Emile", 3, 3, "0788559944", "emile.hugo@gmail.com", "mdp3", true, 4);
         Intervenant i4 = new Autre("Retraité", "syourcenar", "Yourcenar", "Simone", 5, 1, "0722447744", "simone.yourcenar@gmail.com", "mdp4", true, 53);
@@ -464,22 +465,29 @@ public class Service {
         return i;
     }
 
-    public Intervenant trouverIntervenantSoutien(Eleve e) {
+    public Intervenant trouverIntervenantSoutien(Eleve e, Soutien s) {
         IntervenantDao idao = new IntervenantDao();
         Intervenant i = new Intervenant();
+        boolean result = true;
 
         try {
 
             JpaUtil.creerContextePersistance();
             i = idao.findIntervenantSoutien(e);
             System.out.println("Trace : succès find intervenant " + i.getPrenom() + " pour soutien");
+            result = true;
 
         } catch (Exception ex) {
             ex.printStackTrace();
             JpaUtil.annulerTransaction();
             i = null;
+            result = false;
         } finally {
             JpaUtil.fermerContextePersistance();
+        }
+        
+        if (result) {
+            envoyerNotification(i.getTelephone(), "Bonjour " + i.getPrenom() + ". Merci de prendre en charge la demande de soutien en '" + s.getMatiere().getNom() + "' demandée à " + s.getEmissionDemande() + " par " + e.getPrenom() + " en classe de " + e.getNiveau());
         }
         return i;
     }
@@ -613,5 +621,26 @@ public class Service {
             JpaUtil.fermerContextePersistance();
         }
         return result;
+    }
+    
+    /* -------------------SOUTIENS------------------- */
+    public List<Soutien> listerTousSoutiens() {
+        SoutienDao sdao = new SoutienDao();
+        List<Soutien> s;
+
+        try {
+
+            JpaUtil.creerContextePersistance();
+            s = sdao.listAllSoutiens();
+            System.out.println("Trace : succès lister tous les soutiens");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            s = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return s;
+
     }
 }

@@ -42,7 +42,6 @@ public class Main {
         //testerAuthentifierEleveMailSaisie(s);
         //testerAuthentifierIntervenantMailSaisie(s);
         //testerInscriptionEleveSaisie(s);
-
         //testerListerToutesMatieres(s);
         //testerCreationSoutien(s);
         //testerAuthentifierIntervenantMail("adrien.alphabet@insa-lyon.fr", "mdp1", s);
@@ -66,12 +65,19 @@ public class Main {
         testerAuthentifierEleveId(Long.valueOf(8), "mdpamoi", s);
         // ========================================= // */
         //testerInscriptionEleve(s);
-        
         /* ------------- MENU ------------- */
         int choix = -1;
+        Eleve eleveConnecte = null;
+        Intervenant intervenantConnecte = null;
 
         while (choix != 0) {
             System.out.println(FG_GREEN + "\n================= Menu ====================" + RESET);
+            if (eleveConnecte != null) {
+                System.out.println(FG_CYAN + "Élève connecté : " + eleveConnecte.getNom() + " " + eleveConnecte.getPrenom() + ", niveau = " + eleveConnecte.getNiveau());
+            }
+            if (intervenantConnecte != null) {
+                System.out.println(FG_CYAN + "Intervenant connecté : " + intervenantConnecte.getNom() + " " + intervenantConnecte.getPrenom() + " de type " + intervenantConnecte.getClass().getSimpleName());
+            }
             System.out.println(FG_GREEN + "1. " + RESET + "Inscrire un élève");
             System.out.println(FG_GREEN + "2. " + RESET + "Authentifier un élève");
             System.out.println(FG_GREEN + "3. " + RESET + "Authentifier un intervenant");
@@ -79,10 +85,12 @@ public class Main {
             System.out.println(FG_GREEN + "5. " + RESET + "Lister toutes les matières");
             System.out.println(FG_GREEN + "6. " + RESET + "Lister tous les élèves");
             System.out.println(FG_GREEN + "7. " + RESET + "Lister tous les intervenants");
+            System.out.println(FG_GREEN + "8. " + RESET + "Effectuer une demande de soutien (côté Élève)");
+            System.out.println(FG_GREEN + "9. " + RESET + "Lister tous les soutiens");
             System.out.println(FG_GREEN + "0. " + FG_RED + "Quitter" + RESET);
             System.out.println(FG_GREEN + "===========================================" + RESET);
-            
-            List<Integer> valeursPossibles = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7);
+
+            List<Integer> valeursPossibles = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
             choix = lireInteger("Entrez votre choix : ", valeursPossibles);
 
             switch (choix) {
@@ -92,11 +100,11 @@ public class Main {
                     break;
                 case 2:
                     System.out.println(FG_GREEN + "Vous avez choisi l'authentification élève." + RESET);
-                    testerAuthentifierEleveMailSaisie(s);
+                    eleveConnecte = testerAuthentifierEleveMailSaisie(s);
                     break;
                 case 3:
                     System.out.println(FG_GREEN + "Vous avez choisi l'authentification intervenant." + RESET);
-                    testerAuthentifierIntervenantMailSaisie(s);
+                    intervenantConnecte = testerAuthentifierIntervenantMailSaisie(s);
                     break;
                 case 4:
                     System.out.println(FG_GREEN + "Vous avez choisi la génération d'inscriptions d'élèves." + RESET);
@@ -113,6 +121,14 @@ public class Main {
                 case 7:
                     System.out.println(FG_GREEN + "Vous avez choisi de lister tous les intervenants." + RESET);
                     testerListerTousIntervenants(s);
+                    break;
+                case 8:
+                    System.out.println(FG_GREEN + "Vous avez choisi d'effectuer une demande de soutien (côté élève)." + RESET);
+                    testerDemandeSoutienSaisie(s, eleveConnecte);
+                    break;
+                case 9:
+                    System.out.println(FG_GREEN + "Vous avez choisi de lister tous les soutiens." + RESET);
+                    testerListerTousSoutiens(s);
                     break;
                 case 0:
                     System.out.println(FG_RED + "\nFermeture de l'application." + RESET);
@@ -191,7 +207,7 @@ public class Main {
         }
     }
 
-    static void testerAuthentifierEleveMailSaisie(Service s) {
+    static Eleve testerAuthentifierEleveMailSaisie(Service s) {
 
         System.out.println("\n===========================================");
         System.out.println(FG_GREEN + "Bienvenue sur Instruct'IF ! Vous allez maintenant vous connectez en tant qu'" + FG_RED + "élève" + FG_CYAN + "." + RESET);
@@ -201,7 +217,7 @@ public class Main {
         System.out.println("\n===========================================");
 
         Eleve eleveConnecte = s.authentifierEleveMail(adresseMail, mdp);
-        
+
         if (eleveConnecte != null) {
             testerAffichageProfilEleve(eleveConnecte);
             String temp = lireChaine("Tapez n'importe quoi pour continuer");
@@ -209,9 +225,9 @@ public class Main {
             System.out.println(FG_RED + "\n===========================================" + RESET);
             System.out.println(FG_RED + "ERREUR : Échec de la connexion : adresse e-mail et/ou mot de passe invalide(s)." + RESET);
         }
-
+        return eleveConnecte;
     }
-    
+
     static void testerAffichageProfilEleve(Eleve eleveConnecte) {
         System.out.println("\n===========================================");
 
@@ -267,7 +283,7 @@ public class Main {
         System.out.println("===========================================\n");
 
     }
-    
+
     static void testerListerTousEleves(Service s) {
         List<Eleve> elist;
         elist = s.listerTousEleves();
@@ -279,8 +295,7 @@ public class Main {
             }
             System.out.println(FG_GREEN + "===========================================\n" + RESET);
             String temp = lireChaine("Tapez n'importe quoi pour continuer");
-        }
-        else {
+        } else {
             System.out.println(FG_RED + "\nERREUR : Aucun élève n'est inscrit." + RESET);
         }
     }
@@ -308,7 +323,7 @@ public class Main {
         System.out.println("===========================================\n");
     }
 
-    static void testerAuthentifierIntervenantMailSaisie(Service s) {
+    static Intervenant testerAuthentifierIntervenantMailSaisie(Service s) {
 
         System.out.println("\n===========================================");
         System.out.println(FG_GREEN + "Bienvenue sur Instruct'IF ! Vous allez maintenant vous connectez en tant qu'" + FG_RED + "intervenant" + FG_CYAN + "." + RESET);
@@ -325,40 +340,42 @@ public class Main {
             System.out.println(FG_RED + "\n===========================================" + RESET);
             System.out.println(FG_RED + "ERREUR : Échec de la connexion : adresse e-mail et/ou mot de passe invalide(s)." + RESET);
         }
+
+        return intervenantConnecte;
     }
 
     static void testerAffichageProfilIntervenant(Intervenant intervenantConnecte) {
-            System.out.println("\n===========================================");
+        System.out.println("\n===========================================");
 
-            System.out.println(FG_CYAN + "Bienvenue " + intervenantConnecte.getPrenom() + ". Voici ton profil :" + RESET);
-            System.out.println("Nom : " + FG_GREEN + intervenantConnecte.getNom() + RESET);
-            System.out.println("Prénom : " + FG_GREEN + intervenantConnecte.getPrenom() + RESET);
-            System.out.println("Niveau(x) enseigné(s) : " + FG_GREEN + "De " + intervenantConnecte.getNiveau_min() + " à " + intervenantConnecte.getNiveau_max() + RESET);
-            System.out.println("Nombres d'interventions : " + FG_GREEN + intervenantConnecte.getNbInterventions() + RESET);
-            System.out.println("Téléphone : " + FG_GREEN + intervenantConnecte.getTelephone() + RESET);
-            System.out.println("E-mail : " + FG_GREEN + intervenantConnecte.getMail() + RESET);
-            System.out.println("Mot de passe : " + FG_GREEN + intervenantConnecte.getMdp() + RESET);
-            
-            System.out.println(FG_CYAN + "\nVous êtes un intervenant de type " + FG_RED + intervenantConnecte.getClass().getSimpleName() + FG_CYAN + " : " + RESET);
-            switch(intervenantConnecte.getClass().getSimpleName()) {
-                case "Etudiant":
-                    Etudiant etudiantConnecte = (Etudiant)intervenantConnecte;
-                    System.out.println("Université : " + FG_GREEN + etudiantConnecte.getUniversite() + RESET);
-                    System.out.println("Spécialité : " + FG_GREEN + etudiantConnecte.getSpecialite() + RESET);
-                    break;
-                case "Enseignant":
-                    Enseignant enseignantConnecte = (Enseignant)intervenantConnecte;
-                    System.out.println("Type d'établissement d'exercice : " + FG_GREEN + enseignantConnecte.getTypeEtablissement() + RESET);
-                    break;
-                case "Autre":
-                    Autre autreConnecte = (Autre)intervenantConnecte;
-                    System.out.println("Activité : " + FG_GREEN + autreConnecte.getActivite() + RESET);
-                    break;
-            }
-            
-            System.out.println("===========================================\n");
+        System.out.println(FG_CYAN + "Bienvenue " + intervenantConnecte.getPrenom() + ". Voici ton profil :" + RESET);
+        System.out.println("Nom : " + FG_GREEN + intervenantConnecte.getNom() + RESET);
+        System.out.println("Prénom : " + FG_GREEN + intervenantConnecte.getPrenom() + RESET);
+        System.out.println("Niveau(x) enseigné(s) : " + FG_GREEN + "De " + intervenantConnecte.getNiveau_min() + " à " + intervenantConnecte.getNiveau_max() + RESET);
+        System.out.println("Nombres d'interventions : " + FG_GREEN + intervenantConnecte.getNbInterventions() + RESET);
+        System.out.println("Téléphone : " + FG_GREEN + intervenantConnecte.getTelephone() + RESET);
+        System.out.println("E-mail : " + FG_GREEN + intervenantConnecte.getMail() + RESET);
+        System.out.println("Mot de passe : " + FG_GREEN + intervenantConnecte.getMdp() + RESET);
+
+        System.out.println(FG_CYAN + "\nVous êtes un intervenant de type " + FG_RED + intervenantConnecte.getClass().getSimpleName() + FG_CYAN + " : " + RESET);
+        switch (intervenantConnecte.getClass().getSimpleName()) {
+            case "Etudiant":
+                Etudiant etudiantConnecte = (Etudiant) intervenantConnecte;
+                System.out.println("Université : " + FG_GREEN + etudiantConnecte.getUniversite() + RESET);
+                System.out.println("Spécialité : " + FG_GREEN + etudiantConnecte.getSpecialite() + RESET);
+                break;
+            case "Enseignant":
+                Enseignant enseignantConnecte = (Enseignant) intervenantConnecte;
+                System.out.println("Type d'établissement d'exercice : " + FG_GREEN + enseignantConnecte.getTypeEtablissement() + RESET);
+                break;
+            case "Autre":
+                Autre autreConnecte = (Autre) intervenantConnecte;
+                System.out.println("Activité : " + FG_GREEN + autreConnecte.getActivite() + RESET);
+                break;
+        }
+
+        System.out.println("===========================================\n");
     }
-    
+
     static void testerListerTousIntervenants(Service s) {
         List<Intervenant> ilist;
         ilist = s.listerTousIntervenants();
@@ -370,12 +387,11 @@ public class Main {
             }
             System.out.println(FG_GREEN + "===========================================\n" + RESET);
             String temp = lireChaine("Tapez n'importe quoi pour continuer");
-        }
-        else {
+        } else {
             System.out.println(FG_RED + "\nERREUR : Aucun intervenant n'est inscrit." + RESET);
         }
     }
-    
+
     /* -------------------MATIERES------------------- */
     static void testerListerToutesMatieres(Service s) {
         List<Matiere> mlist;
@@ -392,7 +408,7 @@ public class Main {
     /* -------------------SOUTIENS------------------- */
     static void testerCreationSoutien(Service s) {
         Soutien soutien = new Soutien(s.trouverEleveParId(Long.valueOf(20)), s.trouverMatiereParId(Long.valueOf(8)), "Aled");
-        Intervenant i = s.trouverIntervenantSoutien(soutien.getEleve());
+        Intervenant i = s.trouverIntervenantSoutien(soutien.getEleve(), soutien);
         System.out.println("Intervenant trouvé : " + i);
         soutien.setIntervenant(i);
 
@@ -403,6 +419,59 @@ public class Main {
         // L'élève saisit la note à donner au soutien
         soutien.setNote(5);
         s.ajouterSoutien(soutien);
+    }
+
+    static void testerDemandeSoutienSaisie(Service s, Eleve eleve) {
+        while (eleve == null) {
+            System.out.println(FG_RED + "\nVeuillez d'abord vous authentifier en tant qu'élève." + RESET);
+            eleve = testerAuthentifierEleveMailSaisie(s);
+        }
+        System.out.println(FG_CYAN + "Bonjour, " + eleve.getPrenom() + ". Tu as demandé à effectuer un soutien, donne-nous plus d'informations :" + RESET);
+        testerListerToutesMatieres(s);
+
+        Integer matiereInt = lireInteger("\nID de la matière voulue : ");
+        Long idMatiere = Long.valueOf(matiereInt);
+        String description = lireChaine("Dis-nous en plus sur ta demande : ");
+
+        Matiere m = s.trouverMatiereParId(idMatiere);
+
+        if (m == null) {
+            System.out.println(FG_RED + "\nERREUR : Matière non trouvée." + RESET);
+        } else {
+            Soutien soutien = new Soutien(s.trouverEleveParId(eleve.getId()), m, description);
+            Intervenant intervenant = s.trouverIntervenantSoutien(soutien.getEleve(), soutien);
+            if (intervenant == null) {
+                System.out.println(FG_RED + "\nDésolé, nous n'avons pas trouvé d'intervenant adéquat. Merci de réessayer plus tard." + RESET);
+            } else {
+                soutien.setIntervenant(intervenant);
+                soutien.setDebutSoutien(new Date());
+                intervenant.setDisponible(false);
+                System.out.println(FG_GREEN + "Intervenant trouvé : " + intervenant.getNom() + " " + intervenant.getPrenom() + " de type " + intervenant.getClass().getSimpleName());
+                String temp = lireChaine(FG_GREEN + "==========VISIO EN COURS==========" + RESET + "\nTapez n'importe quoi pour y mettre fin.");
+                intervenant.setDisponible(true);
+                soutien.setFinSoutien(new Date());
+                List<Integer> valeursPossibles = Arrays.asList(1, 2, 3, 4, 5);
+                Integer note = lireInteger("Comment as-tu trouvé le soutien ? Note-le de 1 à 5 : ", valeursPossibles);
+                soutien.setNote(note);
+                s.ajouterSoutien(soutien);
+            }
+        }
+    }
+
+    static void testerListerTousSoutiens(Service ser) {
+        List<Soutien> slist;
+        slist = ser.listerTousSoutiens();
+        if (slist.size() > 0) {
+            System.out.println(FG_GREEN + "\n===========================================" + RESET);
+            System.out.println(FG_GREEN + "Liste des soutiens :" + RESET);
+            for (Soutien s : slist) {
+                System.out.println(s);
+            }
+            System.out.println(FG_GREEN + "===========================================\n" + RESET);
+            String temp = lireChaine("Tapez n'importe quoi pour continuer");
+        } else {
+            System.out.println(FG_RED + "\nERREUR : Aucun soutien n'a été effectué." + RESET);
+        }
     }
 
     /* -------------------COULEURS------------------- */

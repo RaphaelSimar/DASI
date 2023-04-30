@@ -55,4 +55,10 @@ public class SoutienDao {
         return query.getResultList();
     }
     
+    public List<Soutien> listAllSoutiens() {
+        String s = "SELECT s FROM Soutien s ORDER BY s.emissionDemande";
+        TypedQuery query = JpaUtil.obtenirContextePersistance().createQuery(s,Soutien.class);
+        return query.getResultList();
+    }
+    
 }
