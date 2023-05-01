@@ -61,5 +61,29 @@ public class SoutienDao {
         return query.getResultList();
     }
    
-    
+    public Double getMeanIntervenant(Intervenant i){
+        String s = "SELECT AVG(s.note) FROM Soutien s WHERE s.intervenant = :i";
+        TypedQuery query = JpaUtil.obtenirContextePersistance().createQuery(s,Intervenant.class);
+        query.setParameter("i", i);
+        return (Double) query.getSingleResult();
+    }
+
+    public Integer[] getLevelsRepartition(Intervenant i){
+        Integer repartition[] = {-1,-1,-1,-1,-1,-1,-1};
+
+        String s = "SELECT COUNT(s) FROM Soutien s JOIN s.eleve e WHERE s.intervenant = :i AND e.niveau = :n";
+        TypedQuery query = JpaUtil.obtenirContextePersistance().createQuery(s,Intervenant.class);
+        query.setParameter("i", i);
+        int n;
+        for(n=6; n>=0; --n){
+            query.setParameter("n", n);
+            Long longValue = (Long) query.getSingleResult();
+            repartition[6-n] = longValue.intValue();
+            int indice = 6-n;
+            System.out.println("indice i = " + indice);
+        }
+
+        return repartition;
+    }
+
 }

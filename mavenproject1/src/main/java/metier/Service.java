@@ -724,4 +724,46 @@ public class Service {
         return s;
 
     }
+    
+    /* -------------------STATISTIQUES------------------- */
+
+    public Double noteMoyenneIntervenant(Intervenant i){
+        Double moyenne = -1.0;
+        SoutienDao sdao = new SoutienDao();
+
+        try {
+
+            JpaUtil.creerContextePersistance();
+            moyenne = sdao.getMeanIntervenant(i);
+            System.out.println("Trace : succès calcul note moyenne " + i);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return moyenne;
+    }
+
+    public Integer[] repartitionClassesAidees(Intervenant i){
+        Integer repartition[] = {-1,-1,-1,-1,-1,-1,-1};
+        SoutienDao sdao = new SoutienDao();
+
+        try {
+
+            JpaUtil.creerContextePersistance();
+            repartition = sdao.getLevelsRepartition(i);
+            System.out.println("Trace : succès récupération interventions par classe " + i);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return repartition;
+    }
+    
+    
 }

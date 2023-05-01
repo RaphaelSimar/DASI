@@ -93,10 +93,12 @@ public class Main {
             System.out.println(FG_GREEN + "12. " + RESET + "Lister tous les élèves");
             System.out.println(FG_GREEN + "13. " + RESET + "Lister tous les intervenants");
             System.out.println(FG_GREEN + "14. " + RESET + "Lister tous les soutiens");
+            System.out.println(FG_GREEN + "15. " + RESET + "Note moyenne intervenant");
+            System.out.println(FG_GREEN + "16. " + RESET + "Répartition par classe des soutiens de l'intervenant");
             System.out.println(FG_GREEN + "0.  " + FG_RED + "Quitter" + RESET);
             System.out.println(FG_GREEN + "===========================================" + RESET);
 
-            List<Integer> valeursPossibles = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
+            List<Integer> valeursPossibles = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
             choix = lireInteger("Entrez votre choix : ", valeursPossibles);
 
             switch (choix) {
@@ -155,6 +157,14 @@ public class Main {
                 case 14:
                     System.out.println(FG_GREEN + "Vous avez choisi de lister tous les soutiens." + RESET);
                     testerListerTousSoutiens(s);
+                    break;
+                case 15:
+                    System.out.println(FG_GREEN + "Vous avez choisi d'afficher la note moyenne de l'intervenant." + RESET);
+                    testerNoteMoyenneIntervenant(s, intervenantConnecte);
+                    break;
+                case 16:
+                    System.out.println(FG_GREEN + "Vous avez choisi d'afficher la répartition par classe de l'intervenant" + RESET);
+                    testerRepartitionClassesAidees(s, intervenantConnecte);
                     break;
                 case 0:
                     System.out.println(FG_RED + "\nFermeture de l'application." + RESET);
@@ -648,6 +658,49 @@ public class Main {
             System.out.println(FG_RED + "\nERREUR : Aucun soutien n'a été effectué." + RESET);
         }
     }
+    
+    /* -------------------STATISTIQUES------------------- */
+    
+    static void testerNoteMoyenneIntervenant(Service ser, Intervenant i) {
+        while (i == null) {
+            System.out.println(FG_RED + "\nVeuillez d'abord vous authentifier en tant qu'intervenant." + RESET);
+            i = testerAuthentifierIntervenantLoginSaisie(ser);
+        }
+        
+        Double noteM;
+        noteM = ser.noteMoyenneIntervenant(i);
+        if (noteM > 0) {
+            System.out.println(FG_GREEN + "Note moyenne :" + noteM);
+            String temp = lireChaine("Tapez n'importe quoi pour continuer");
+        } else {
+            System.out.println(FG_RED + "\nERREUR : Aucun soutien n'a été effectué." + RESET);
+        }
+    }
+    
+    static void testerRepartitionClassesAidees(Service ser, Intervenant i) {
+        while (i == null) {
+            System.out.println(FG_RED + "\nVeuillez d'abord vous authentifier en tant qu'intervenant." + RESET);
+            i = testerAuthentifierIntervenantLoginSaisie(ser);
+        }
+        
+        Integer repartition[] = ser.repartitionClassesAidees(i);
+        
+        if (repartition[0]>=0 && repartition[1]>=0 && repartition[2]>=0 && repartition[3]>=0 && repartition[4]>=0 && repartition[5]>=0 && repartition[6]>=0) {
+            System.out.println(FG_GREEN + "Répartition par niveau : ");
+            System.out.println(FG_GREEN + "6ème : " + repartition[0]);
+            System.out.println(FG_GREEN + "5ème : " + repartition[1]);
+            System.out.println(FG_GREEN + "4ème : " + repartition[2]);
+            System.out.println(FG_GREEN + "3ème : " + repartition[3]);
+            System.out.println(FG_GREEN + "2nde : " + repartition[4]);
+            System.out.println(FG_GREEN + "1ère : " + repartition[5]);
+            System.out.println(FG_GREEN + "Tale : " + repartition[6]);
+            String temp = lireChaine("Tapez n'importe quoi pour continuer");
+        } else {
+            System.out.println(FG_RED + "\nERREUR : Problème dans la recherche de répartition de classes." + RESET);
+        }
+    }
+    
+    
 
     /* -------------------COULEURS------------------- */
     public static final String FG_GREEN = "\u001b[32m";
