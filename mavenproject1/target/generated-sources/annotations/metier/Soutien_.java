@@ -8,13 +8,14 @@ import metier.Eleve;
 import metier.Intervenant;
 import metier.Matiere;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2023-05-02T17:52:51")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2023-05-02T18:11:13")
 @StaticMetamodel(Soutien.class)
 public class Soutien_ { 
 
     public static volatile SingularAttribute<Soutien, Date> finSoutien;
     public static volatile SingularAttribute<Soutien, Date> emissionDemande;
     public static volatile SingularAttribute<Soutien, Integer> note;
+    public static volatile SingularAttribute<Soutien, Boolean> visioLancee;
     public static volatile SingularAttribute<Soutien, String> description_demande;
     public static volatile SingularAttribute<Soutien, Date> debutSoutien;
     public static volatile SingularAttribute<Soutien, Long> id;

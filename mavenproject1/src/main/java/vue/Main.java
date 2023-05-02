@@ -526,6 +526,7 @@ public class Main {
                 soutien.setDebutSoutien(new Date());
                 intervenant.setDisponible(false);
                 System.out.println(FG_GREEN + "Intervenant trouvé : " + intervenant.getNom() + " " + intervenant.getPrenom() + " de type " + intervenant.getClass().getSimpleName());
+                soutien.setVisioLancee(true);
                 String temp = lireChaine(FG_GREEN + "==========VISIO EN COURS==========" + RESET + "\nTapez n'importe quoi pour y mettre fin.");
                 intervenant.setDisponible(true);
                 soutien.setFinSoutien(new Date());
@@ -572,6 +573,7 @@ public class Main {
 
                 System.out.println("===========================================\n");
                 String temp = lireChaine("Tapez n'importe quoi pour accepter la demande");
+                s.setVisioLancee(true);
 
                 s.setDebutSoutien(new Date());
                 i.setDisponible(false);
@@ -602,7 +604,7 @@ public class Main {
             Soutien s1 = new Soutien(e1, ser.trouverMatiereParId(Long.valueOf(8)), "Aidez-moi");
             Intervenant i1 = ser.trouverIntervenantSoutien(s1.getEleve(), s1);
             s1.setIntervenant(i1);
-
+            s1.setVisioLancee(true);
             s1.setDebutSoutien(new Date());
             // La visio est en cours
             // L'élève met fin à la visio
@@ -615,7 +617,7 @@ public class Main {
             Soutien s2 = new Soutien(e2, ser.trouverMatiereParId(Long.valueOf(9)), "Au secours");
             Intervenant i2 = ser.trouverIntervenantSoutien(s2.getEleve(), s2);
             s2.setIntervenant(i2);
-
+            s2.setVisioLancee(true);
             s2.setDebutSoutien(new Date());
             // La visio est en cours
             // L'élève met fin à la visio
@@ -628,7 +630,7 @@ public class Main {
             Soutien s3 = new Soutien(e3, ser.trouverMatiereParId(Long.valueOf(10)), "Help me");
             Intervenant i3 = ser.trouverIntervenantSoutien(s3.getEleve(), s3);
             s3.setIntervenant(i3);
-
+            s3.setVisioLancee(true);
             s3.setDebutSoutien(new Date());
             // La visio est en cours
             // L'élève met fin à la visio

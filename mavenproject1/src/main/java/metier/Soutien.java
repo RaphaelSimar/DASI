@@ -47,6 +47,8 @@ public class Soutien implements Serializable {
     
     private String description_demande;
 
+    private boolean visioLancee;
+
     
     public Soutien(Eleve eleve, Matiere matiere, String description_demande) {
         this.eleve = eleve;
@@ -57,9 +59,14 @@ public class Soutien implements Serializable {
         this.intervenant = null;
         this.matiere = matiere;
         this.description_demande = description_demande;
+        this.visioLancee = false;
     }
 
     public Soutien() {
+    }
+
+    public boolean getVisioLancee() {
+        return visioLancee;
     }
     
     public Long getId() {
@@ -128,6 +135,10 @@ public class Soutien implements Serializable {
 
     public void setDescription_demande(String description_demande) {
         this.description_demande = description_demande;
+    }
+
+    public void setVisioLancee(boolean visioLancee) {
+        this.visioLancee = visioLancee;
     }
 
     @Override
