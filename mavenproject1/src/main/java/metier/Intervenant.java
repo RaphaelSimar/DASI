@@ -102,6 +102,46 @@ public class Intervenant implements Serializable {
         return nbInterventions;
     }
 
+    public String getNiveau_minString() {
+        String niv = null;
+        if (this.niveau_min > 2) {
+            niv = this.niveau_min + "ème";
+        } else {
+            switch (niveau_min) {
+                case 2:
+                    niv = "Seconde";
+                    break;
+                case 1:
+                    niv = "Première";
+                    break;
+                case 0:
+                    niv = "Terminale";
+                    break;
+            }
+        }
+        return niv;
+    }
+    
+    public String getNiveau_maxString() {
+        String niv = null;
+        if (this.niveau_max > 2) {
+            niv = this.niveau_max + "ème";
+        } else {
+            switch (niveau_max) {
+                case 2:
+                    niv = "Seconde";
+                    break;
+                case 1:
+                    niv = "Première";
+                    break;
+                case 0:
+                    niv = "Terminale";
+                    break;
+            }
+        }
+        return niv;
+    }
+
     public void setLogin(String login) {
         this.login = login;
     }

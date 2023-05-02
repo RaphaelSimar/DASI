@@ -22,22 +22,23 @@ import javax.persistence.TemporalType;
  */
 @Entity
 public class Eleve implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Temporal(TemporalType.DATE)
     private Date dateNaissance;
-    
+
     @ManyToOne
     private Etablissement etablissement;
-    
+
     private Integer niveau;
     private String nom;
     private String prenom;
-    
+
     @Column(unique = true)
     private String mail;
-    
+
     private String mdp;
     private String adressePostale;
 
@@ -75,6 +76,26 @@ public class Eleve implements Serializable {
 
     public String getAdressePostale() {
         return adressePostale;
+    }
+
+    public String getNiveauString() {
+        String niv = null;
+        if (this.niveau > 2) {
+            niv = this.niveau + "ème";
+        } else {
+            switch (niveau) {
+                case 2:
+                    niv = "Seconde";
+                    break;
+                case 1:
+                    niv = "Première";
+                    break;
+                case 0:
+                    niv = "Terminale";
+                    break;
+            }
+        }
+        return niv;
     }
 
     public void setDateNaissance(Date dateNaissance) {
@@ -115,7 +136,7 @@ public class Eleve implements Serializable {
 
     @Override
     public String toString() {
-        return "Eleve : " + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", niveau=" + niveau + ", mail=" + mail + ", mdp=" + mdp + ", dateNaissance=" + dateNaissance +  ", Etablissement=" + etablissement.getNom() + ", uaiEtablissement=" + etablissement.getUai() + ", adressePostale=" + adressePostale;
+        return "Eleve : " + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", niveau=" + niveau + ", mail=" + mail + ", mdp=" + mdp + ", dateNaissance=" + dateNaissance + ", Etablissement=" + etablissement.getNom() + ", uaiEtablissement=" + etablissement.getUai() + ", adressePostale=" + adressePostale;
     }
 
     public Eleve() {
@@ -129,7 +150,7 @@ public class Eleve implements Serializable {
         this.mail = mail;
         this.mdp = mdp;
         this.adressePostale = adressePostale;
-        
+
         //Vérifie existence etab dans la bd
         //si existe, alors on récup l'objet
         //sinon on construit un étab

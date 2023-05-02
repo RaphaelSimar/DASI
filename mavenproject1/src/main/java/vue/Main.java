@@ -74,7 +74,7 @@ public class Main {
         while (choix != 0) {
             System.out.println(FG_GREEN + "\n================= Menu ====================" + RESET);
             if (eleveConnecte != null) {
-                System.out.println(FG_CYAN + "Élève connecté : " + eleveConnecte.getNom() + " " + eleveConnecte.getPrenom() + ", niveau = " + eleveConnecte.getNiveau());
+                System.out.println(FG_CYAN + "Élève connecté : " + eleveConnecte.getNom() + " " + eleveConnecte.getPrenom() + ", niveau = " + eleveConnecte.getNiveauString());
             }
             if (intervenantConnecte != null) {
                 System.out.println(FG_CYAN + "Intervenant connecté : " + intervenantConnecte.getNom() + " " + intervenantConnecte.getPrenom() + " de type " + intervenantConnecte.getClass().getSimpleName());
@@ -276,7 +276,7 @@ public class Main {
         System.out.println("Date de naissance : " + FG_GREEN + strDate + RESET);
         System.out.println("Code établissement : " + FG_GREEN + eleveConnecte.getEtablissement().getUai() + RESET);
         System.out.println("Nom établissement : " + FG_GREEN + eleveConnecte.getEtablissement().getNom() + RESET);
-        System.out.println("Niveau : " + FG_GREEN + eleveConnecte.getNiveau() + RESET);
+        System.out.println("Niveau : " + FG_GREEN + eleveConnecte.getNiveauString() + RESET);
         System.out.println("E-mail : " + FG_GREEN + eleveConnecte.getMail() + RESET);
         System.out.println("Mot de passe : " + FG_GREEN + eleveConnecte.getMdp() + RESET);
 
@@ -407,7 +407,7 @@ public class Main {
         System.out.println(FG_CYAN + "Bienvenue " + intervenantConnecte.getPrenom() + ". Voici ton profil :" + RESET);
         System.out.println("Nom : " + FG_GREEN + intervenantConnecte.getNom() + RESET);
         System.out.println("Prénom : " + FG_GREEN + intervenantConnecte.getPrenom() + RESET);
-        System.out.println("Niveau(x) enseigné(s) : " + FG_GREEN + "De " + intervenantConnecte.getNiveau_min() + " à " + intervenantConnecte.getNiveau_max() + RESET);
+        System.out.println("Niveau(x) enseigné(s) : " + FG_GREEN + "De la " + intervenantConnecte.getNiveau_minString() + " à la " + intervenantConnecte.getNiveau_maxString() + RESET);
         System.out.println("Nombres d'interventions : " + FG_GREEN + intervenantConnecte.getNbInterventions() + RESET);
         System.out.println("Téléphone : " + FG_GREEN + intervenantConnecte.getTelephone() + RESET);
         System.out.println("Login : " + FG_GREEN + intervenantConnecte.getLogin() + RESET);
@@ -547,7 +547,7 @@ public class Main {
             Soutien s = new Soutien(e, ser.trouverMatiereParId(Long.valueOf(8)), "J'aurais besoin d'aide pour un DM");
             Intervenant i = ser.trouverIntervenantParId(Long.valueOf(2));
 
-            envoyerNotification(i.getTelephone(), "Bonjour " + i.getPrenom() + ". Merci de prendre en charge la demande de soutien en '" + s.getMatiere().getNom() + "' demandée à " + s.getEmissionDemande() + " par " + e.getPrenom() + " en classe de " + e.getNiveau());
+            envoyerNotification(i.getTelephone(), "Bonjour " + i.getPrenom() + ". Merci de prendre en charge la demande de soutien en '" + s.getMatiere().getNom() + "' demandée à " + s.getEmissionDemande() + " par " + e.getPrenom() + " en classe de " + e.getNiveauString());
             s.setIntervenant(i);
 
             Intervenant i2 = testerAuthentifierIntervenantLoginSaisie(ser);
@@ -564,7 +564,7 @@ public class Main {
                 System.out.println("Date de naissance : " + FG_GREEN + strDate + RESET);
                 System.out.println("Code établissement : " + FG_GREEN + e.getEtablissement().getUai() + RESET);
                 System.out.println("Nom établissement : " + FG_GREEN + e.getEtablissement().getNom() + RESET);
-                System.out.println("Niveau : " + FG_GREEN + e.getNiveau() + RESET);
+                System.out.println("Niveau : " + FG_GREEN + e.getNiveauString() + RESET);
                 System.out.println("E-mail : " + FG_GREEN + e.getMail() + RESET);
 
                 System.out.println("\nMatière demandée : " + FG_GREEN + s.getMatiere().getNom() + RESET);
@@ -575,7 +575,7 @@ public class Main {
 
                 s.setDebutSoutien(new Date());
                 i.setDisponible(false);
-                System.out.println(FG_GREEN + "Élève accompagné : " + e.getNom() + " " + e.getPrenom() + " de niveau " + e.getNiveau());
+                System.out.println(FG_GREEN + "Élève accompagné : " + e.getNom() + " " + e.getPrenom());
                 String temp2 = lireChaine(FG_GREEN + "==========VISIO EN COURS==========" + RESET + "\nTapez n'importe quoi pour y mettre fin.");
                 i.setDisponible(true);
                 s.setFinSoutien(new Date());
@@ -673,7 +673,7 @@ public class Main {
             System.out.println(FG_GREEN + "Note moyenne :" + noteM);
             String temp = lireChaine("Tapez n'importe quoi pour continuer");
         } else {
-            System.out.println(FG_RED + "\nERREUR : Aucun soutien n'a été effectué." + RESET);
+            System.out.println(FG_RED + "\nERREUR : Aucun soutien n'a été effectué par cet intervenant." + RESET);
         }
     }
     
