@@ -9,7 +9,6 @@ import com.google.maps.model.LatLng;
 import util.EducNetApi;
 import dao.EleveDao;
 import dao.JpaUtil;
-import dao.EmployeDao;
 import dao.EtablissementDao;
 import dao.IntervenantDao;
 import dao.MatiereDao;
@@ -31,111 +30,7 @@ public class Service {
     public Service() {
     }
 
-    public void initialiserEmployes() {
-
-        Employe emp1 = new Employe("FAVRO", "Samuel", "11111", "sfavro");
-        emp1.setMdp("mdp1");
-
-        Employe emp2 = new Employe("DEKEW", "Simon", "22222", "sdekew");
-        emp2.setMdp("mdp2");
-
-        Employe emp3 = new Employe("LOU", "Flavien", "33333", "flou");
-        emp3.setMdp("mdp3");
-
-        Employe emp4 = new Employe("GUOGUEN", "Gabriela", "44444", "gguoguen");
-        emp4.setMdp("mdp4");
-
-        Employe emp5 = new Employe("HERNENDEZ", "Vincent", "55555", "vhernendez");
-        emp5.setMdp("mdp5");
-
-        recruter(emp1);
-        recruter(emp2);
-        recruter(emp3);
-        recruter(emp4);
-        recruter(emp5);
-    }
-
-    public Employe recruter(Employe emp) {
-
-        EmployeDao edao = new EmployeDao();
-
-        try {
-
-            JpaUtil.creerContextePersistance();
-            JpaUtil.ouvrirTransaction();
-            edao.create(emp);
-            JpaUtil.validerTransaction();
-            System.out.println("Trace : succès recruter" + emp);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JpaUtil.annulerTransaction();
-            emp = null;
-        } finally {
-            JpaUtil.fermerContextePersistance();
-        }
-        return emp;
-    }
-
-    public Employe trouverEmployeParId(Long id) {
-        EmployeDao edao = new EmployeDao();
-        Employe emp = new Employe();
-
-        try {
-
-            JpaUtil.creerContextePersistance();
-            emp = edao.findById(id);
-            System.out.println("Trace : succès find " + id);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JpaUtil.annulerTransaction();
-            emp = null;
-        } finally {
-            JpaUtil.fermerContextePersistance();
-        }
-        return emp;
-
-    }
-
-    public List<Employe> listerTousEmployes() {
-        EmployeDao edao = new EmployeDao();
-        List<Employe> emp;
-
-        try {
-
-            JpaUtil.creerContextePersistance();
-            emp = edao.listAllEmployees();
-            System.out.println("Trace : succès lister tous les employés");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JpaUtil.annulerTransaction();
-            emp = null;
-        } finally {
-            JpaUtil.fermerContextePersistance();
-        }
-        return emp;
-
-    }
-
-    public Employe authentifierEmploye(String login, String mdp) {
-        EmployeDao edao = new EmployeDao();
-        Employe emp = new Employe();
-
-        try {
-
-            JpaUtil.creerContextePersistance();
-            emp = edao.authenticateEmployee(login, mdp);
-            System.out.println("Trace : succès authentification " + emp.getLogin());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JpaUtil.annulerTransaction();
-            emp = null;
-        } finally {
-            JpaUtil.fermerContextePersistance();
-        }
-        return emp;
-
-    }
-
+    
     public boolean inscriptionEleve(Eleve eleve, String uai) {
         EleveDao edao = new EleveDao();
         EtablissementDao etabdao = new EtablissementDao();

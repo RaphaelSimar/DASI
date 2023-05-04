@@ -36,37 +36,9 @@ public class Main {
     public static void main(String[] args) {
         JpaUtil.creerFabriquePersistance();
         Service s = new Service();
-        //s.initialiserEmployes();
         s.initialiserIntervenants();
         s.initialiserMatieres();
-        //testerInscriptionEleve(s);
-
-        //testerAuthentifierEleveMailSaisie(s);
-        //testerAuthentifierIntervenantMailSaisie(s);
-        //testerInscriptionEleveSaisie(s);
-        //testerListerToutesMatieres(s);
-        //testerCreationSoutien(s);
-        //testerAuthentifierIntervenantMail("adrien.alphabet@insa-lyon.fr", "mdp1", s);
-        // TESTER CREATION INTERVENANTS : creer contexte persistance, valider transaction etc.
-        // ==================Tests================== //
-/*        
-// Employés
-        testerTrouverEmployeParId(Long.valueOf(2), s);
-
-        testerListerTousEmployes(s);
-
-        testerAuthentifierEmploye("sdekew", "mdp2", s);
-
-        // Élèves
         
-
-        testerTrouverEleveParId(Long.valueOf(8), s);
-
-        testerAuthentifierEleveMail("pas.moi.non.plus@insa-lyon.fr", "mdpamoi", s);
-
-        testerAuthentifierEleveId(Long.valueOf(8), "mdpamoi", s);
-        // ========================================= // */
-        //testerInscriptionEleve(s);
         /* ------------- MENU ------------- */
         int choix = -1;
         Eleve eleveConnecte = null;
@@ -185,36 +157,6 @@ public class Main {
                     break;
             }
         }
-    }
-
-    static void testerTrouverEmployeParId(Long id, Service s) {
-        Employe e = new Employe();
-        e = s.trouverEmployeParId(id);
-        System.out.println("\n===========================================");
-        System.out.println(FG_GREEN + "Employé trouvé par id " + id + " : " + e + RESET);
-        System.out.println("===========================================\n");
-    }
-
-    static void testerListerTousEmployes(Service s) {
-        List<Employe> elist;
-        elist = s.listerTousEmployes();
-        System.out.println("\n===========================================");
-        System.out.println(FG_GREEN + "Liste des employés :" + RESET);
-        for (Employe e : elist) {
-            System.out.println(e);
-        }
-        System.out.println("===========================================\n");
-    }
-
-    static void testerAuthentifierEmploye(String login, String mdp, Service s) {
-
-        Employe e = s.authentifierEmploye(login, mdp);
-
-        System.out.println("\n===========================================");
-        System.out.println(FG_GREEN + "Employé identifié par : login - " + login + " / mdp - " + mdp + RESET);
-
-        System.out.println(FG_GREEN + e + RESET);
-        System.out.println("===========================================\n");
     }
 
     /* -------------------ELEVES------------------- */
