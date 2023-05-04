@@ -16,6 +16,7 @@ import dao.MatiereDao;
 import dao.SoutienDao;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javafx.util.Pair;
 
@@ -728,10 +729,9 @@ public class Service {
         return s;
 
     }
-    
-    /* -------------------STATISTIQUES------------------- */
 
-    public Double noteMoyenneIntervenant(Intervenant i){
+    /* -------------------STATISTIQUES------------------- */
+    public Double noteMoyenneIntervenant(Intervenant i) {
         Double moyenne = -1.0;
         SoutienDao sdao = new SoutienDao();
 
@@ -750,8 +750,8 @@ public class Service {
         return moyenne;
     }
 
-    public Integer[] repartitionClassesAidees(Intervenant i){
-        Integer repartition[] = {-1,-1,-1,-1,-1,-1,-1};
+    public Integer[] repartitionClassesAidees(Intervenant i) {
+        Integer repartition[] = {-1, -1, -1, -1, -1, -1, -1};
         SoutienDao sdao = new SoutienDao();
 
         try {
@@ -768,8 +768,8 @@ public class Service {
         }
         return repartition;
     }
-    
-    public Double ipsMoyenAide(Intervenant i){    
+
+    public Double ipsMoyenAide(Intervenant i) {
         SoutienDao sdao = new SoutienDao();
         List<Soutien> soutiens;
 
@@ -784,16 +784,15 @@ public class Service {
             JpaUtil.fermerContextePersistance();
         }
         Double res = 0.0;
-        for(Soutien s : soutiens){
+        for (Soutien s : soutiens) {
             res += Double.parseDouble(s.getEleve().getEtablissement().getIps());
         }
-        res = res/soutiens.size();
-        
+        res = res / soutiens.size();
+
         return res;
     }
-    
-    
-    public List<String[]> coordonneesEtablissementsAides(Intervenant i){
+
+    public HashMap<String, Double[]> coordonneesEtablissementsAides(Intervenant i) {
         SoutienDao sdao = new SoutienDao();
         List<Soutien> soutiens;
 
@@ -807,15 +806,16 @@ public class Service {
         } finally {
             JpaUtil.fermerContextePersistance();
         }
+
+        HashMap<String, Double[]> res = new HashMap<String, Double[]>();
         
-        List<String[]> res = new ArrayList();
-        for(Soutien s : soutiens){
+        for (Soutien s : soutiens) {
             String adresseEtablissement = s.getEleve().getEtablissement().getNom() + ", " + s.getEleve().getEtablissement().getCommune();
             LatLng coordsEtablissement = GeoNetApi.getLatLng(adresseEtablissement);
-            String[] coordonnees = {s.getEleve().getEtablissement().getUai(), Double.toString(coordsEtablissement.lat), Double.toString(coordsEtablissement.lng)};
-            res.add(coordonnees);
+            Double[] coordonnees = {coordsEtablissement.lat, coordsEtablissement.lng};
+            res.put(s.getEleve().getEtablissement().getUai(), coordonnees);
         }
-        
+
         return res;
     }
 }

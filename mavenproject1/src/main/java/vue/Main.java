@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -729,10 +730,11 @@ public class Main {
             System.out.println(FG_RED + "\nVeuillez d'abord vous authentifier en tant qu'intervenant." + RESET);
             i = testerAuthentifierIntervenantLoginSaisie(ser);
         }
-        List<String[]> res = ser.coordonneesEtablissementsAides(i);
+        HashMap<String, Double[]> res = ser.coordonneesEtablissementsAides(i);
         
-        for(String[] etab : res){
-            System.out.println(FG_GREEN + "UAI : " + etab[0] + ", lat : " + etab[1] + ", long : " + etab[2]);
+        for(String etab : res.keySet()){
+            Double[] gps = res.get(etab);
+            System.out.println(FG_GREEN + "UAI : " + etab + ", lat : " + gps[0] + ", long : " + gps[1]);
         }
         
     }
