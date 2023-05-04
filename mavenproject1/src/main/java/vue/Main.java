@@ -17,6 +17,7 @@ import metier.Autre;
 import metier.Eleve;
 import metier.Employe;
 import metier.Enseignant;
+import metier.Etablissement;
 import metier.Etudiant;
 import metier.Intervenant;
 import metier.Matiere;
@@ -95,10 +96,12 @@ public class Main {
             System.out.println(FG_GREEN + "14. " + RESET + "Lister tous les soutiens");
             System.out.println(FG_GREEN + "15. " + RESET + "Note moyenne intervenant");
             System.out.println(FG_GREEN + "16. " + RESET + "Répartition par classe des soutiens de l'intervenant");
+            System.out.println(FG_GREEN + "17. " + RESET + "Afficher l'IPS moyen des établissements d'origine des élèves aidés");
+            System.out.println(FG_GREEN + "18. " + RESET + "Afficher pour chaque établissement d'origine des étudiants aidés UAI et GPS");
             System.out.println(FG_GREEN + "0.  " + FG_RED + "Quitter" + RESET);
             System.out.println(FG_GREEN + "===========================================" + RESET);
 
-            List<Integer> valeursPossibles = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+            List<Integer> valeursPossibles = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18);
             choix = lireInteger("Entrez votre choix : ", valeursPossibles);
 
             switch (choix) {
@@ -165,6 +168,14 @@ public class Main {
                 case 16:
                     System.out.println(FG_GREEN + "Vous avez choisi d'afficher la répartition par classe de l'intervenant" + RESET);
                     testerRepartitionClassesAidees(s, intervenantConnecte);
+                    break;
+                case 17:
+                    System.out.println(FG_GREEN + "Vous avez choisi d'afficher l'IPS moyen des établissements dans lesquels sont inscrits les élèves aidés." + RESET);
+                    testerIpsMoyenAide(s, intervenantConnecte);
+                    break;
+                case 18:
+                    System.out.println(FG_GREEN + "Vous avez choisi d'afficher pour chaque établissement d'origine des étudiants aidés son UAI et GPS." + RESET);
+                    testerCoordonneesEtablissementsAides(s, intervenantConnecte);
                     break;
                 case 0:
                     System.out.println(FG_RED + "\nFermeture de l'application." + RESET);
@@ -702,6 +713,29 @@ public class Main {
         }
     }
     
+    static void testerIpsMoyenAide(Service ser, Intervenant i) {
+        
+        while (i == null) {
+            System.out.println(FG_RED + "\nVeuillez d'abord vous authentifier en tant qu'intervenant." + RESET);
+            i = testerAuthentifierIntervenantLoginSaisie(ser);
+        }
+        
+        System.out.println(FG_GREEN + ser.ipsMoyenAide(i));
+    }
+            
+    static void testerCoordonneesEtablissementsAides(Service ser, Intervenant i) {
+        
+        while (i == null) {
+            System.out.println(FG_RED + "\nVeuillez d'abord vous authentifier en tant qu'intervenant." + RESET);
+            i = testerAuthentifierIntervenantLoginSaisie(ser);
+        }
+        List<String[]> res = ser.coordonneesEtablissementsAides(i);
+        
+        for(String[] etab : res){
+            System.out.println(FG_GREEN + "UAI : " + etab[0] + ", lat : " + etab[1] + ", long : " + etab[2]);
+        }
+        
+    }
     
 
     /* -------------------COULEURS------------------- */

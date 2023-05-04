@@ -5,6 +5,12 @@
  */
 package metier;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import util.EducNetApi;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -28,6 +34,30 @@ public class Etablissement {
     private String insee;
 
     public Etablissement() {
+    }
+    
+    public Etablissement(String uai, int niveau) {
+        EducNetApi eapi = new EducNetApi();
+        List<String> res;
+        try {
+            if(niveau<3){
+                res = eapi.getInformationLycee(uai);
+            }else{
+                res = eapi.getInformationCollege(uai);
+            }
+            
+            this.uai = uai;
+            this.nom = res.get(1);
+            this.secteur = res.get(2);
+            this.commune = res.get(4);
+            this.ips = res.get(8);
+            this.academie = res.get(7);
+            this.departement = res.get(6);
+            this.codeDepartement = res.get(5);
+            this.insee = res.get(3);
+        } catch (IOException ex) {
+            Logger.getLogger(Etablissement.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Etablissement(String uai, String nom, String secteur, String commune, String ips, String academie, String departement, String codeDepartement, String insee) {

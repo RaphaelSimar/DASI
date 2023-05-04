@@ -5,7 +5,8 @@
  */
 package metier;
 
-import dao.EducNetApi;
+import com.google.maps.model.LatLng;
+import util.EducNetApi;
 import dao.EleveDao;
 import dao.JpaUtil;
 import dao.EmployeDao;
@@ -14,12 +15,15 @@ import dao.IntervenantDao;
 import dao.MatiereDao;
 import dao.SoutienDao;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import javafx.util.Pair;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import util.GeoNetApi;
 import static util.Message.envoyerMail;
 import static util.Message.envoyerNotification;
 
@@ -765,5 +769,53 @@ public class Service {
         return repartition;
     }
     
+    public Double ipsMoyenAide(Intervenant i){    
+        SoutienDao sdao = new SoutienDao();
+        List<Soutien> soutiens;
+
+        try {
+            JpaUtil.creerContextePersistance();
+            soutiens = sdao.listSoutiensByIntervenant(i);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            soutiens = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        Double res = 0.0;
+        for(Soutien s : soutiens){
+            res += Double.parseDouble(s.getEleve().getEtablissement().getIps());
+        }
+        res = res/soutiens.size();
+        
+        return res;
+    }
     
+    
+    public List<String[]> coordonneesEtablissementsAides(Intervenant i){
+        SoutienDao sdao = new SoutienDao();
+        List<Soutien> soutiens;
+
+        try {
+            JpaUtil.creerContextePersistance();
+            soutiens = sdao.listSoutiensByIntervenant(i);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            soutiens = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        
+        List<String[]> res = new ArrayList();
+        for(Soutien s : soutiens){
+            String adresseEtablissement = s.getEleve().getEtablissement().getNom() + ", " + s.getEleve().getEtablissement().getCommune();
+            LatLng coordsEtablissement = GeoNetApi.getLatLng(adresseEtablissement);
+            String[] coordonnees = {s.getEleve().getEtablissement().getUai(), Double.toString(coordsEtablissement.lat), Double.toString(coordsEtablissement.lng)};
+            res.add(coordonnees);
+        }
+        
+        return res;
+    }
 }
