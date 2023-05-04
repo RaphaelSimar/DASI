@@ -6,6 +6,7 @@
 package metier;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +20,7 @@ import javax.persistence.Id;
  * @author rsimar
  */
 @Entity
-public class Etablissement {
+public class Etablissement implements Serializable {
     
     @Id
     private String uai;

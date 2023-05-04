@@ -4,10 +4,8 @@
  * and open the template in the editor.
  */
 package dao;
-import dao.JpaUtil;
 import java.util.List;
 import javax.persistence.TypedQuery;
-import metier.Eleve;
 import metier.Employe;
 
 /**

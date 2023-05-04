@@ -18,7 +18,6 @@ import metier.Autre;
 import metier.Eleve;
 import metier.Employe;
 import metier.Enseignant;
-import metier.Etablissement;
 import metier.Etudiant;
 import metier.Intervenant;
 import metier.Matiere;
