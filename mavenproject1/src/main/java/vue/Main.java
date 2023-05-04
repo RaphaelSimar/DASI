@@ -66,14 +66,10 @@ public class Main {
             System.out.println(FG_GREEN + "12. " + RESET + "Lister tous les élèves");
             System.out.println(FG_GREEN + "13. " + RESET + "Lister tous les intervenants");
             System.out.println(FG_GREEN + "14. " + RESET + "Lister tous les soutiens");
-            System.out.println(FG_GREEN + "15. " + RESET + "Note moyenne intervenant");
-            System.out.println(FG_GREEN + "16. " + RESET + "Répartition par classe des soutiens de l'intervenant");
-            System.out.println(FG_GREEN + "17. " + RESET + "Afficher l'IPS moyen des établissements d'origine des élèves aidés");
-            System.out.println(FG_GREEN + "18. " + RESET + "Afficher pour chaque établissement d'origine des étudiants aidés UAI et GPS");
             System.out.println(FG_GREEN + "0.  " + FG_RED + "Quitter" + RESET);
             System.out.println(FG_GREEN + "===========================================" + RESET);
 
-            List<Integer> valeursPossibles = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18);
+            List<Integer> valeursPossibles = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
             choix = lireInteger("Entrez votre choix : ", valeursPossibles);
 
             switch (choix) {
@@ -115,7 +111,8 @@ public class Main {
                     testerVoirHistoriqueIntervenant(s, intervenantConnecte);
                     break;
                 case 10:
-                    // A FAIRE
+                    System.out.println(FG_GREEN + "Vous avez choisi de voir votre tableau de bord (en tant qu'intervenant)." + RESET);
+                    testerAffichageTableauDeBord(s, intervenantConnecte);
                     break;
                 case 11:
                     System.out.println(FG_GREEN + "Vous avez choisi de lister toutes les matières." + RESET);
@@ -132,22 +129,6 @@ public class Main {
                 case 14:
                     System.out.println(FG_GREEN + "Vous avez choisi de lister tous les soutiens." + RESET);
                     testerListerTousSoutiens(s);
-                    break;
-                case 15:
-                    System.out.println(FG_GREEN + "Vous avez choisi d'afficher la note moyenne de l'intervenant." + RESET);
-                    testerNoteMoyenneIntervenant(s, intervenantConnecte);
-                    break;
-                case 16:
-                    System.out.println(FG_GREEN + "Vous avez choisi d'afficher la répartition par classe de l'intervenant" + RESET);
-                    testerRepartitionClassesAidees(s, intervenantConnecte);
-                    break;
-                case 17:
-                    System.out.println(FG_GREEN + "Vous avez choisi d'afficher l'IPS moyen des établissements dans lesquels sont inscrits les élèves aidés." + RESET);
-                    testerIpsMoyenAide(s, intervenantConnecte);
-                    break;
-                case 18:
-                    System.out.println(FG_GREEN + "Vous avez choisi d'afficher pour chaque établissement d'origine des étudiants aidés son UAI et GPS." + RESET);
-                    testerCoordonneesEtablissementsAides(s, intervenantConnecte);
                     break;
                 case 0:
                     System.out.println(FG_RED + "\nFermeture de l'application." + RESET);
@@ -677,7 +658,57 @@ public class Main {
             Double[] gps = res.get(etab);
             System.out.println(FG_GREEN + "UAI : " + etab + ", lat : " + gps[0] + ", long : " + gps[1]);
         }
+    }
+    
+    static void testerAffichageTableauDeBord(Service ser, Intervenant i) {
         
+        while (i == null) {
+            System.out.println(FG_RED + "\nVeuillez d'abord vous authentifier en tant qu'intervenant." + RESET);
+            i = testerAuthentifierIntervenantLoginSaisie(ser);
+        }
+        
+        System.out.println(FG_GREEN + "----------------------------------");
+        System.out.println(FG_GREEN + "----------TABLEAU DE BORD---------");
+        System.out.println(FG_GREEN + "----------------------------------");
+        
+        // NOTE MOYENNE
+        Double noteM;
+        noteM = ser.noteMoyenneIntervenant(i);
+        if (noteM > 0) {
+            System.out.println(FG_GREEN + "NOTE MOYENNE ATTRIBUEE : " + noteM);
+        } else {
+            System.out.println(FG_RED + "\nERREUR : Aucun soutien n'a été effectué par cet intervenant." + RESET);
+        }
+        
+        // Répartition des classes aidées
+        Integer repartition[] = ser.repartitionClassesAidees(i);
+        
+        if (repartition[0]>=0 && repartition[1]>=0 && repartition[2]>=0 && repartition[3]>=0 && repartition[4]>=0 && repartition[5]>=0 && repartition[6]>=0) {
+            System.out.println(FG_GREEN + "REPARTITION PAR NIVEAU : ");
+            System.out.println(FG_GREEN + "6ème : " + repartition[0]);
+            System.out.println(FG_GREEN + "5ème : " + repartition[1]);
+            System.out.println(FG_GREEN + "4ème : " + repartition[2]);
+            System.out.println(FG_GREEN + "3ème : " + repartition[3]);
+            System.out.println(FG_GREEN + "2nde : " + repartition[4]);
+            System.out.println(FG_GREEN + "1ère : " + repartition[5]);
+            System.out.println(FG_GREEN + "Tale : " + repartition[6]);
+        } else {
+            System.out.println(FG_RED + "\nERREUR : Problème dans la recherche de répartition de classes." + RESET);
+        }
+         
+        // IPS MOYEN
+        System.out.println(FG_GREEN + "IPS MOYEN DES ETABLISSEMENTS DES ELEVES AIDES : " + ser.ipsMoyenAide(i));
+        
+        // COORDONNEES GPS
+        HashMap<String, Double[]> res = ser.coordonneesEtablissementsAides(i);
+        
+        System.out.println(FG_GREEN + "INFORMATIONS GEOGRAPHIQUES PAR ETABLISSEMENT");
+        for(String etab : res.keySet()){
+            Double[] gps = res.get(etab);
+            System.out.println(FG_GREEN + "UAI : " + etab + ", latitude : " + gps[0] + ", longitude : " + gps[1]);
+        }
+        
+        String temp = lireChaine("Tapez n'importe quoi pour continuer");
     }
     
 
