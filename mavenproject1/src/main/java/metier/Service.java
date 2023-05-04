@@ -30,6 +30,15 @@ public class Service {
     public Service() {
     }
 
+    /*
+    Permet d’ajouter l’élève passé en paramètre à la base de données ainsi que, 
+    s’il n’est pas déjà présent dans la base, son établissement donné par l’uai 
+    passé en paramètre.
+    Paramètres d’entrée :
+        eleve (Eleve) que l’on veut ajouter dans la base de données
+        uai (String) le code associé à l’établissement de l’élève
+    Sortie : booléen indiquant si l’élève a bien été ajouté (true) ou non (false)
+    */
     
     public boolean inscriptionEleve(Eleve eleve, String uai) {
         EleveDao edao = new EleveDao();
@@ -80,6 +89,13 @@ public class Service {
 
         return result;
     }
+    
+    /*
+    Permet de trouver l’entité Eleve à l’aide de son ID passé en paramètre, et le renvoyer.
+    Paramètres d’entrée : id (Long) de l’entité Eleve que l’on recherche
+    Sortie : Eleve : l’entité recherchée
+
+    */
 
     public Eleve trouverEleveParId(Long id) {
         EleveDao edao = new EleveDao();
@@ -101,6 +117,16 @@ public class Service {
         return e;
     }
 
+    /*
+    Permet d’authentifier un élève à l’aide de son mail et son mot de passe passés
+    en paramètres. Il renvoie l’élève authentifié (ou null si erreur de connexion).
+    Paramètres d’entrée : 
+        - mail (String)
+        - mdp (String)
+    Sortie : 
+        entité Eleve correspondant à l’élève authentifié
+        null si le mail et/ou le mot de passe ne sont pas valides
+    */
     public Eleve authentifierEleveMail(String mail, String mdp) {
         EleveDao edao = new EleveDao();
         Eleve e = new Eleve();
@@ -120,6 +146,16 @@ public class Service {
         return e;
     }
 
+    /*
+    Permet d’authentifier un élève à l’aide de son id et son mot de passe passés 
+    en paramètres. Il renvoie l’élève authentifié (ou null si erreur de connexion).
+    Paramètres d’entrée : 
+        - id (Long)
+        - mdp (String)
+    Sortie : 
+        entité Eleve correspondant à l’élève authentifié
+        null si l'ID et/ou le mot de passe ne sont pas valides
+    */
     public Eleve authentifierEleveId(Long id, String mdp) {
         EleveDao edao = new EleveDao();
         Eleve e = new Eleve();
@@ -139,6 +175,14 @@ public class Service {
         return e;
     }
 
+    /*
+    Permet de lister les soutiens dans lesquels l’entité Eleve passée en paramètre 
+    est présente. Il permet d’obtenir tous les soutiens demandés par tel élève 
+    (à utiliser pour l’historique des soutiens).
+    Paramètres d’entrée : 
+        eleve (Eleve) l’entité dont on veut la liste de soutiens
+    Sortie : liste de tous les soutiens dans lesquels l’entité Eleve passée en paramètre est présente
+    */
     public List<Soutien> listerSoutiensEleve(Eleve e) {
         SoutienDao sdao = new SoutienDao();
         List<Soutien> s;
@@ -159,6 +203,11 @@ public class Service {
 
     }
 
+    /*
+    Permet de lister toutes les entités Eleve existant dans la base de données.
+    Paramètres d’entrée : eleve (Eleve) l’entité dont on veut la liste complète
+    Sortie : liste de toutes les entités Eleve existant dans la base de données
+    */
     public List<Eleve> listerTousEleves() {
         EleveDao edao = new EleveDao();
         List<Eleve> e;
@@ -181,6 +230,12 @@ public class Service {
 
 
     /* -------------------ETABLISSEMENTS ------------------- */
+    
+    /*
+    Permet de trouver l’entité Etablissement à l’aide de son UID passé en paramètre, et le renvoyer.
+    Paramètres d’entrée : UID (String) de l’entité Etablissement que l’on recherche
+    Sortie : Etablissement : l’entité recherchée
+    */
     public Etablissement trouverEtablissementParUai(String uai) {
         EtablissementDao edao = new EtablissementDao();
         Etablissement e;
@@ -202,6 +257,16 @@ public class Service {
         return e;
     }
 
+    /*
+    Permet de compléter toutes les informations nécessaires à la création 
+    d'une entité Etablissement, à partir de son UAI.
+    Cette fonction utilise une API contenue dans la classeEducNetApi
+    Paramètres d’entrée : 
+        - UID (String) de l’entité Etablissement que l’on recherche
+        - niveau (Integer) de l'élève inscrit dans cet établissement. 
+          Sert à déterminer si c'est un collège ou un lycée
+    Sortie : Etablissement : l’entité construite
+    */
     private Etablissement creerEtablissementApi(String uai, Integer niveau) {
         Etablissement e;
         EducNetApi api = new EducNetApi();
@@ -239,6 +304,11 @@ public class Service {
 
     }
 
+    /*
+    Permet d’ajouter l’entité Etablissement passée en paramètres à la base de données.
+    Paramètres d’entrée : etablissement (Etablissement) l’entité que l’on veut rajouter à la base de données
+    Sortie : booléen indiquant si l’entité a bien été ajoutée (true) ou non (false)
+    */
     public boolean ajouterEtablissement(Etablissement e) {
         EtablissementDao edao = new EtablissementDao();
         boolean result;
@@ -261,6 +331,12 @@ public class Service {
     }
 
     /* -------------------INTERVENANTS------------------- */
+    
+    /*
+    Permet d’ajouter l’entité Intervenant passée en paramètres à la base de données.
+    Paramètres d’entrée : intervenant (Intervenant) l’entité que l’on veut rajouter à la base de données
+    Sortie : booléen indiquant si l’entité a bien été ajoutée (true) ou non (false)
+    */
     public boolean ajouterIntervenant(Intervenant i) {
         IntervenantDao idao = new IntervenantDao();
         boolean result;
@@ -282,6 +358,11 @@ public class Service {
         return result;
     }
 
+    /*
+    Permet de trouver l’entité Intervenant à l’aide de son Id passé en paramètre, et le renvoyer.
+    Paramètres d’entrée : id (Long) de l’entité Intervenant que l’on recherche
+    Sortie : Intervenant : l’entité recherchée
+    */
     public Intervenant trouverIntervenantParId(Long id) {
         IntervenantDao idao = new IntervenantDao();
         Intervenant i;
@@ -303,6 +384,11 @@ public class Service {
         return i;
     }
 
+    /*
+    Permet d’initialiser des entités Intervenant en les créant en dur dans la base de données.
+    Paramètres d’entrée : intervenant (Intervenant) l’entité que l’on veut rajouter à la base de données
+    Sortie : booléen indiquant si l’entité a bien été ajoutée (true) ou non (false)
+    */
     public boolean initialiserIntervenants() {
         // login, nom, prénom, niveau min, niveau max, téléphone, mail, mdp, disponible, nbInterventions
         /*
@@ -342,6 +428,16 @@ public class Service {
         return result;
     }
 
+    /*
+    Permet d’authentifier un intervenant à l’aide de son mail et son mot de passe passés
+    en paramètres. Il renvoie l’intervenant authentifié (ou null si erreur de connexion).
+    Paramètres d’entrée : 
+        - mail (String)
+        - mdp (String)
+    Sortie : 
+        entité Intervanant correspondant à l’intervenant authentifié
+        null si le mail et/ou le mot de passe ne sont pas valides
+    */
     public Intervenant authentifierIntervenantMail(String mail, String mdp) {
         IntervenantDao idao = new IntervenantDao();
         Intervenant i = new Intervenant();
@@ -361,6 +457,16 @@ public class Service {
         return i;
     }
 
+    /*
+    Permet d’authentifier un Intervenant à l’aide de son id et son mot de passe passés 
+    en paramètres. Il renvoie l’intervenant authentifié (ou null si erreur de connexion).
+    Paramètres d’entrée : 
+        - id (Long)
+        - mdp (String)
+    Sortie : 
+        entité Intervenant correspondant à l’intervenant authentifié
+        null si l'ID et/ou le mot de passe ne sont pas valides
+    */
     public Intervenant authentifierIntervenantId(Long id, String mdp) {
         IntervenantDao idao = new IntervenantDao();
         Intervenant i = new Intervenant();
@@ -380,6 +486,17 @@ public class Service {
         return i;
     }
 
+    /*
+    Permet d’authentifier un intervenant à l’aide de son login et son mot de 
+    passe passés en paramètres. Il renvoie l’intervenant authentifié 
+    (ou null si erreur de connexion).
+    Paramètres d’entrée : 
+        - login (String)
+        - mdp (String)
+    Sortie : 
+        entité Intervenant correspondant à l’intervenant authentifié, 
+        null si le mail et/ou le mot de passe ne sont pas valides
+    */
     public Intervenant authentifierIntervenantLogin(String login, String mdp) {
         IntervenantDao idao = new IntervenantDao();
         Intervenant i = new Intervenant();
@@ -399,6 +516,11 @@ public class Service {
         return i;
     }
 
+    /*
+    Permet d’incrémenter (de 1) le nombre d’interventions de l’intervenant passé en paramètre.
+    Paramètres d’entrée : intervenant (Intervenant)
+    Sortie : booléen indiquant si l’entité a bien été mise à jour (true) ou non (false)
+    */
     public boolean incrementerNbInterventions(Intervenant i) {
         IntervenantDao idao = new IntervenantDao();
         boolean result;
@@ -421,6 +543,20 @@ public class Service {
         return result;
     }
 
+    /*
+    Permet de trouver un intervenant dont les niveaux enseignés incluent le 
+    niveau de l’élève passé en paramètre, qui est disponible et dont le nombre 
+    d’interventions est minimal. Il permet aussi d’envoyer une notification à 
+    l’intervenant trouvé avec les informations sur le soutien passé en paramètre.
+    Paramètres d’entrée :
+        - eleve (Eleve) l’élève ayant demandé un soutien pour lequel on souhaite 
+          trouver un intervenant adéquat
+        - soutien (Soutien) la demande de soutien comportant déjà l’élève 
+          demandeur, la matière et la description saisies par ce dernier
+    Sortie : Intervenant trouvé dont les niveaux enseignés incluent le niveau de 
+             l’élève passé en paramètre, qui est disponible et dont le nombre 
+             d’interventions est minimal
+    */
     public Intervenant trouverIntervenantSoutien(Eleve e, Soutien s) {
         IntervenantDao idao = new IntervenantDao();
         Intervenant i = new Intervenant();
@@ -448,6 +584,15 @@ public class Service {
         return i;
     }
 
+    /*
+    Permet de lister les soutiens dans lesquels l’entité Intervenant passée en paramètre 
+    est présente. 
+    Il permet d’obtenir tous les soutiens réalisés par tel intervenant 
+    (à utiliser pour l’historique des soutiens).
+    Paramètres d’entrée : intervenant (Intervenant) l’entité dont on veut la liste 
+    de soutiens
+    Sortie : liste de tous les soutiens dans lesquels l’entité Intervenant passée en paramètre est présente
+    */
     public List<Soutien> listerSoutiensIntervenant(Intervenant i) {
         SoutienDao sdao = new SoutienDao();
         List<Soutien> s;
@@ -468,6 +613,11 @@ public class Service {
 
     }
 
+    /*
+    Permet de lister toutes les entités Intervenants existant dans la base de données.
+    Paramètres d’entrée : intervenants (Intervenants) l’entité dont on veut la liste complète
+    Sortie : liste de toutes les entités Intervenants existant dans la base de données
+    */
     public List<Intervenant> listerTousIntervenants() {
         IntervenantDao idao = new IntervenantDao();
         List<Intervenant> i;
@@ -489,6 +639,12 @@ public class Service {
     }
 
     /* -------------------MATIERES------------------- */
+    
+    /*
+    Permet d’initialiser des entités Matieres en les créant en dur dans la base de données.
+    Paramètres d’entrée : matieres (Matieres) l’entité que l’on veut rajouter à la base de données
+    Sortie : booléen indiquant si l’entité a bien été ajoutée (true) ou non (false)
+    */
     public boolean initialiserMatieres() {
         Matiere fra = new Matiere("Français");
         Matiere mat = new Matiere("Mathématiques");
@@ -537,6 +693,11 @@ public class Service {
         return result;
     }
 
+    /*
+    Permet de lister toutes les entités Matiere existant dans la base de données.
+    Paramètres d’entrée : matiere (Matiere) l’entité dont on veut la liste complète
+    Sortie : liste de toutes les entités Matiere existant dans la base de données
+    */
     public List<Matiere> listerToutesMatieres() {
         MatiereDao edao = new MatiereDao();
         List<Matiere> mat;
@@ -557,6 +718,11 @@ public class Service {
 
     }
 
+    /*
+    Permet de trouver l’entité Matiere à l’aide de son Id passé en paramètre, et le renvoyer.
+    Paramètres d’entrée : id (Long) de l’entité Matiere que l’on recherche
+    Sortie : Matiere : l’entité recherchée
+    */
     public Matiere trouverMatiereParId(Long id) {
         MatiereDao mdao = new MatiereDao();
         Matiere m = new Matiere();
@@ -576,7 +742,15 @@ public class Service {
         }
         return m;
     }
+    
+    
+    /* -------------------SOUTIENS------------------- */
 
+    /*
+    Permet d’ajouter l’entité Soutien passée en paramètres à la base de données.
+    Paramètres d’entrée : soutien (Soutien) l’entité que l’on veut rajouter à la base de données
+    Sortie : booléen indiquant si l’entité a bien été ajoutée (true) ou non (false)
+    */
     public boolean ajouterSoutien(Soutien s) {
         SoutienDao sdao = new SoutienDao();
         boolean result;
@@ -598,7 +772,11 @@ public class Service {
         return result;
     }
 
-    /* -------------------SOUTIENS------------------- */
+    /*
+    Permet de lister toutes les entités Soutien existant dans la base de données.
+    Paramètres d’entrée : soutien (Soutien) l’entité dont on veut la liste complète
+    Sortie : liste de toutes les entités Soutien existant dans la base de données
+    */
     public List<Soutien> listerTousSoutiens() {
         SoutienDao sdao = new SoutienDao();
         List<Soutien> s;
@@ -620,6 +798,12 @@ public class Service {
     }
 
     /* -------------------STATISTIQUES------------------- */
+    
+    /*
+    Permet de renvoyer la moyenne des notes attribuées à un intervenant donné.
+    Paramètres d’entrée : i (Intervenant)
+    Sortie : moyenne (Double) des notes de l’intervenant
+    */
     public Double noteMoyenneIntervenant(Intervenant i) {
         Double moyenne = -1.0;
         SoutienDao sdao = new SoutienDao();
@@ -639,6 +823,13 @@ public class Service {
         return moyenne;
     }
 
+    /*
+    Permet de connaître le nombre de soutiens fournis par classe, par l’intervenant donné.
+    Paramètres d’entrée : i (Intervenant)
+    Sortie : repartition (Integer[]) : c’est un tableau de six cases, 
+             où repartition[0] correspond à la sixième et repartition[5] correspond 
+             à la terminale.
+    */
     public Integer[] repartitionClassesAidees(Intervenant i) {
         Integer repartition[] = {-1, -1, -1, -1, -1, -1, -1};
         SoutienDao sdao = new SoutienDao();
@@ -658,6 +849,12 @@ public class Service {
         return repartition;
     }
 
+    /*
+    Permet de connaître l’IPS (Indice de Position Sociale) moyen des établissements 
+    où sont scolarisés les élèves aidés.
+    Paramètres d’entrée : i (Intervenant)
+    Sortie : ipsMoyen (Double)
+    */
     public Double ipsMoyenAide(Intervenant i) {
         SoutienDao sdao = new SoutienDao();
         List<Soutien> soutiens;
@@ -681,6 +878,18 @@ public class Service {
         return res;
     }
 
+    /*
+    Permet de connaître les coordonnées GPS (latitude et longitude) des 
+    établissements où sont scolarisés les élèves aidés. L’usage d’une HashMap 
+    permet d’éviter les doublons : si un intervenant aide plusieurs élèves 
+    d’un même établissement, une seule donnée GPS sera fournie.
+    
+    Paramètres d’entrée : i (Intervenant)
+    Sortie : listeGPS (HashMap<String, Double[]>)
+        - La clé de la HasMap est l’UAI de l’établissement
+        - Le tableau des coordonnees (Double[]) est un tableau de taille 2 tel que 
+          coordonnes[0] = latitude (Double) et coordonnes[1] = longitude (Double).
+    */
     public HashMap<String, Double[]> coordonneesEtablissementsAides(Intervenant i) {
         SoutienDao sdao = new SoutienDao();
         List<Soutien> soutiens;
