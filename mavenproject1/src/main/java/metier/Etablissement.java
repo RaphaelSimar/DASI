@@ -17,7 +17,8 @@ import javax.persistence.Id;
 
 /**
  *
- * @author rsimar
+ * @authors Raphaël SIMAR & Lina Borg : B3129 
+ * Dominque DROUILLY TORRES : Étudiante d'échange
  */
 @Entity
 public class Etablissement implements Serializable {

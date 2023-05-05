@@ -9,7 +9,8 @@ import metier.Etablissement;
 
 /**
  *
- * @author rsimar
+ * @authors Raphaël SIMAR & Lina Borg : B3129 
+ * Dominque DROUILLY TORRES : Étudiante d'échange
  */
 public class EtablissementDao {
     

@@ -23,7 +23,8 @@ import static util.Message.envoyerNotification;
 
 /**
  *
- * @author rsimar
+ * @authors Raphaël SIMAR & Lina Borg : B3129 
+ * Dominque DROUILLY TORRES : Étudiante d'échange
  */
 public class Service {
 
@@ -57,7 +58,7 @@ public class Service {
             }
             //Vérifie si l'étab a bien été créé avec l'API
             if (etab == null) {
-                System.out.println("Trace : échec inscription eleve - établissement inconnu" + uai);
+                System.out.println("Trace : échec inscription eleve - établissement inconnu " + uai);
             } else {
                 eleve.setEtablissement(etab);
 
@@ -68,7 +69,7 @@ public class Service {
                 }
                 JpaUtil.validerTransaction();
 
-                System.out.println("Trace : succès inscription eleve" + eleve);
+                System.out.println("Trace : succès inscription eleve " + eleve);
 
                 result = true;
             }
@@ -135,7 +136,7 @@ public class Service {
 
             JpaUtil.creerContextePersistance();
             e = edao.authenticateEleveMail(mail, mdp);
-            System.out.println("Trace : succès authentification " + e.getMail());
+            System.out.println("Trace : succès authentification élèveMail" + e.getMail());
         } catch (Exception ex) {
             ex.printStackTrace();
             JpaUtil.annulerTransaction();
@@ -164,7 +165,7 @@ public class Service {
 
             JpaUtil.creerContextePersistance();
             e = edao.authenticateEleveId(id, mdp);
-            System.out.println("Trace : succès authentification " + e.getId());
+            System.out.println("Trace : succès authentification élèveID " + e.getId());
         } catch (Exception ex) {
             ex.printStackTrace();
             JpaUtil.annulerTransaction();
@@ -244,7 +245,7 @@ public class Service {
 
             JpaUtil.creerContextePersistance();
             e = edao.findEtablissementById(uai);
-            System.out.println("Trace : succès find " + uai);
+            System.out.println("Trace : succès find établissement " + uai);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -318,7 +319,7 @@ public class Service {
             JpaUtil.ouvrirTransaction();
             edao.create(e);
             JpaUtil.validerTransaction();
-            System.out.println("Trace : succès ajout établisement" + e);
+            System.out.println("Trace : succès ajout établisement " + e);
             result = true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -346,7 +347,7 @@ public class Service {
             JpaUtil.ouvrirTransaction();
             idao.create(i);
             JpaUtil.validerTransaction();
-            System.out.println("Trace : succès ajout intervenant" + i);
+            System.out.println("Trace : succès ajout intervenant " + i);
             result = true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -371,7 +372,7 @@ public class Service {
 
             JpaUtil.creerContextePersistance();
             i = idao.findIntervenantById(id);
-            System.out.println("Trace : succès find " + id);
+            System.out.println("Trace : succès find intervenant " + id);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -770,6 +771,31 @@ public class Service {
             JpaUtil.fermerContextePersistance();
         }
         return result;
+    }
+    
+    /*
+    Permet de trouver l’entité Soutien à l’aide de son ID passé en paramètre, et le renvoyer.
+    Paramètres d’entrée : id (Long) de l’entité Soutien que l’on recherche
+    Sortie : Soutien : l’entité recherchée
+    */
+    public Soutien trouverSoutienParId(Long id) {
+        SoutienDao sdao = new SoutienDao();
+        Soutien s = new Soutien();
+
+        try {
+
+            JpaUtil.creerContextePersistance();
+            s = sdao.findSoutienById(id);
+            System.out.println("Trace : succès find soutien " + id);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JpaUtil.annulerTransaction();
+            s = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return s;
     }
 
     /*

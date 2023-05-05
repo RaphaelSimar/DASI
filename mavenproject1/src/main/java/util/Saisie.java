@@ -7,7 +7,8 @@ import java.util.List;
 
 /**
  *
- * @author DASI Team
+ * @authors Raphaël SIMAR & Lina Borg : B3129 
+ * Dominque DROUILLY TORRES : Étudiante d'échange
  */
 public class Saisie {
 

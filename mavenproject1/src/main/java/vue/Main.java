@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import metier.Autre;
 import metier.Eleve;
-import metier.Employe;
 import metier.Enseignant;
 import metier.Etudiant;
 import metier.Intervenant;
@@ -29,7 +28,8 @@ import static util.Saisie.lireInteger;
 
 /**
  *
- * @author rsimar
+ * @authors Raphaël SIMAR & Lina Borg : B3129 
+ * Dominque DROUILLY TORRES : Étudiante d'échange
  */
 public class Main {
 

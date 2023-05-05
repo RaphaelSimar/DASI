@@ -9,7 +9,8 @@ import javax.persistence.Entity;
 
 /**
  *
- * @author rsimar
+ * @authors Raphaël SIMAR & Lina Borg : B3129 
+ * Dominque DROUILLY TORRES : Étudiante d'échange
  */
 @Entity
 public class Enseignant extends Intervenant{

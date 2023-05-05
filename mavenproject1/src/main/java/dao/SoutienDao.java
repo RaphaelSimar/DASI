@@ -14,7 +14,8 @@ import metier.Soutien;
 
 /**
  *
- * @author rsimar
+ * @authors Raphaël SIMAR & Lina Borg : B3129 
+ * Dominque DROUILLY TORRES : Étudiante d'échange
  */
 public class SoutienDao {
 
@@ -79,8 +80,6 @@ public class SoutienDao {
             query.setParameter("n", n);
             Long longValue = (Long) query.getSingleResult();
             repartition[6-n] = longValue.intValue();
-            int indice = 6-n;
-            System.out.println("indice i = " + indice);
         }
 
         return repartition;
